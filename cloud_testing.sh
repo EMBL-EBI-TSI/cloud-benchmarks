@@ -13,6 +13,10 @@ function install_dependencies() {
 
   #Phoronix
   sudo yum -y install git php php-xml xdg-utils
+
+  #Freebayes (needs to be compiled)
+  sudo yum -y group install "Development Tools"
+  sudo yum -y install zlib-devel
 }
 
 function install_phoronix() {
