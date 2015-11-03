@@ -6,6 +6,37 @@
 #prefix to all files
 LOG="$HOME/cloud_testing/cloud_testing.log"
 
+#File descriptors redirects
+exec 3>&1 4>&2
+
+#Redirect STDOUT to log file
+exec 1>$LOG 2>&1
+
+# Help display
+usage='Usage:
+ ebi-cloud-testing.sh [OPTIONS]
+
+OPTIONS:
+\n --cloud=<cloud>
+\t Cloud name to identify the results - REQUIRED
+'
+
+# From now on, normal stdout output should be appended with ">&3". e.g.:
+echo '
+  #######################################
+  ###  EBI Cloud Benchmarking script  ###
+  ###				      ###
+  ### Contacts:		              ###
+  ###  gianni@ebi.ac.uk               ###
+  ###  dario@ebi.ac.uk                ###
+  #######################################
+  Final log: '$LOG'
+  #######################################
+' >&3
+
+# Exit when any command fails. To allow failing commands, add "|| true"
+set -o errexit
+
 if [ -d "$HOME/cloud_testing" ]; then
   echo "WARNING: old cloud_testing logs found. Getting rid of them"
   rm -r ~/cloud_testing
@@ -22,13 +53,6 @@ if [ -d "$HOME/.phoronix-test-suite" ]; then
 fi
 
 mkdir ~/cloud_testing
-
-#Redirect STDOUT to log file
-exec 1>$LOG 2>&1
-
-# Exit when any command fails. To allow failing commands, add "|| true"
-set -o errexit
-
 
 function install_dependencies() {
   #Update yum cache
