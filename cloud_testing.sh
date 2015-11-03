@@ -122,6 +122,11 @@ mkdir ~/$BASE_FOLDER
 
 LOG="$HOME/$BASE_FOLDER/cloud_testing_`date +\%y-\%m-\%d_\%H:\%M:\%S`.log"
 
+# Saves file descriptors for later being restored
+exec 3>&1 4>&2
+trap 'exec 2>&4 1>&3' 0 1 2 3
+# Redirect stdout and stderr to a log file
+exec 1>$LOG 2>&1
 
 echo "STEP 1 - Install tools and dependencies"
 echo "INSTALLING DEPENDENCIES"
