@@ -65,19 +65,20 @@ function install_phoronix() {
   ~/.phoronix-test-suite/user-config.xml
 
   # Install the dependency for the test
-  phoronix-test-suite install sqlite
-  # Run the test and save the results as batch_tests
-  # echo "cloudtests" | phoronix-test-suite batch-benchmark sqlite
-  TEST_RESULTS_NAME="cloudtests" phoronix-test-suite batch-benchmark sqlite
-  # Run more benchmarks in a run
-  # echo "cloudtests" | phoronix-test-suite batch-benchmark smallpt build-linux-kernel c-ray sqlite fourstones pybench
-  # Export results in json file (use cvs if php < 5.4, i.e. Centos 6)
-  phoronix-test-suite  result-file-to-json cloudtests > ~/cloudtests.json
+}
+
+function run_phoronix() {
+  #Run chosen phoronix tests
+  TEST_RESULTS_NAME="test_folder" phoronix-test-suite batch-benchmark smallpt build-linux-kernel c-ray sqlite fourstones pybench
+
+  #Write results in JSON
+  phoronix-test-suite result-file-to-json cloudtests > ~/cloudtests.json
 }
 
 # MAIN
 echo "STEP 1 - Install tools and dependencies"
 echo "INSTALLING DEPENDENCIES"
 install_dependencies
-echo " INSTALLING PHORONIX TEST SUITE"
+echo "INSTALLING PHORONIX TEST SUITE"
 install_phoronix
+run_phoronix
