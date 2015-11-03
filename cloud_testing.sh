@@ -4,7 +4,8 @@
 
 #TODO: use an ad-hoc folder named after the cloud we're testing, or add a
 #prefix to all files
-LOG="$HOME/cloud_testing/cloud_testing.log"
+BASE_FOLDER="ebi_cloud_testing"
+LOG="$HOME/$BASE_FOLDER/cloud_testing_`date +\%y-\%m-\%d_\%H:\%M:\%S`.log"
 
 #File descriptors redirects
 exec 3>&1 4>&2
@@ -97,26 +98,6 @@ echo '
   #######################################
 ' >&3
 
-# Exit when any command fails. To allow failing commands, add "|| true"
-set -o errexit
-
-if [ -d "$HOME/cloud_testing" ]; then
-  echo "WARNING: old cloud_testing logs found. Getting rid of them"
-  rm -r ~/cloud_testing
-fi
-
-if [ -d "$HOME/phoronix-test-suite" ]; then
-  echo "WARNING: old phoronix-test-suite folder found. Getting rid of it."
-  rm -rf ~/phoronix-test-suite
-fi
-
-if [ -d "$HOME/.phoronix-test-suite" ]; then
-  echo "WARNING: old ~.phoronix-test-suite folder found. Getting rid of it."
-  rm -rf ~/phoronix-test-suite
-fi
-
-mkdir ~/cloud_testing
-
 while [ "$1" != "" ]; do
     case $1 in
         --cloud=* )    CLOUD=${1#*=};
@@ -134,6 +115,28 @@ if [ -z $CLOUD ] || [ $CLOUD == "" ];then
 fi
 
 echo -e "Using cloud name: $CLOUD" >&3
+
+# Exit when any command fails. To allow failing commands, add "|| true"
+set -o errexit
+
+if [ -d "$HOME/$BASE_FOLDER/cloud_testing" ]; then
+  echo "WARNING: old cloud_testing logs found. Getting rid of them"
+  rm -r ~/cloud_testing
+fi
+
+if [ -d "$HOME/phoronix-test-suite" ]; then
+  echo "WARNING: old phoronix-test-suite folder found. Getting rid of it."
+  rm -rf ~/phoronix-test-suite
+fi
+
+if [ -d "$HOME/.phoronix-test-suite" ]; then
+  echo "WARNING: old ~.phoronix-test-suite folder found. Getting rid of it."
+  rm -rf ~/phoronix-test-suite
+fi
+
+mkdir ~/cloud_testing
+
+
 
 
 echo "STEP 1 - Install tools and dependencies"
