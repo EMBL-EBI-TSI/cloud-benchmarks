@@ -38,7 +38,6 @@ function install_dependencies() {
   sudo yum -y install git php php-xml xdg-utils
 }
 
-
 function install_phoronix() {
   # get the latest stable version of phoronix test suite
   git clone https://github.com/phoronix-test-suite/phoronix-test-suite.git
@@ -69,10 +68,10 @@ function install_phoronix() {
 
 function run_phoronix() {
   #Run chosen phoronix tests
-  TEST_RESULTS_NAME="test_folder" phoronix-test-suite batch-benchmark smallpt build-linux-kernel c-ray sqlite fourstones pybench
+  TEST_RESULTS_NAME=test_result phoronix-test-suite batch-benchmark smallpt build-linux-kernel c-ray sqlite fourstones pybench
 
   #Write results in JSON
-  phoronix-test-suite result-file-to-json cloudtests > ~/cloudtests.json
+  phoronix-test-suite result-file-to-json test_result > ~/test_result.json
 }
 
 # MAIN
