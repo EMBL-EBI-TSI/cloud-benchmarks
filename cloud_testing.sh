@@ -74,10 +74,30 @@ function run_phoronix() {
   phoronix-test-suite result-file-to-json test_result > ~/test_result.json
 }
 
+function install_freebayes() {
+  #Clone freebayes repo
+  git clone --recursive git://github.com/ekg/freebayes.git
+  #Get reference for chr20
+  wget "http://hgdownload.cse.ucsc.edu/goldenPath/hg38/chromosomes/chr20.fa.gz" && gunzip chr20.fa.gz
+
+  #Get low cov 1MB BAM file for chr20
+  #TODO: how to get this?
+
+}
+
+# function run_freebayes() {
+#   #Run freebayes
+#
+# }
+
 # MAIN
 echo "STEP 1 - Install tools and dependencies"
 echo "INSTALLING DEPENDENCIES"
 install_dependencies
 echo "INSTALLING PHORONIX TEST SUITE"
 install_phoronix
+echo "INSTALL FREEBAYES AND GET DATA"
+install_freebayes
+
+echo "STEP 2 - Running tests"
 run_phoronix
