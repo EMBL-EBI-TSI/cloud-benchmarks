@@ -110,7 +110,7 @@ set -o errexit
 
 if [ -d "$HOME/$BASE_FOLDER" ]; then
   echo "WARNING: old base folder ($BASE_FOLDER) found. Getting rid of it."
-  rm -r ~/$BASE_FOLDER
+  rm -rf ~/$BASE_FOLDER
 fi
 
 if [ -d "$HOME/.phoronix-test-suite" ]; then
@@ -118,13 +118,14 @@ if [ -d "$HOME/.phoronix-test-suite" ]; then
   rm -rf ~/phoronix-test-suite
 fi
 
-mkdir ~/cloud_testing
+mkdir ~/$BASE_FOLDER
 
-
+LOG="$HOME/$BASE_FOLDER/cloud_testing_`date +\%y-\%m-\%d_\%H:\%M:\%S`.log"
 
 
 echo "STEP 1 - Install tools and dependencies"
 echo "INSTALLING DEPENDENCIES"
+cd $BASE_FOLDER || exit
 install_dependencies
 echo "INSTALLING PHORONIX TEST SUITE"
 install_phoronix
