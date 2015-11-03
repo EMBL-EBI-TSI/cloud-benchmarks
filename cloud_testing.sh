@@ -103,7 +103,7 @@ if [ -z $CLOUD ] || [ $CLOUD == "" ];then
     echo -e '\n\nERROR: please provide a cloud name. Exiting now.\n' >&3 && exit 1
 fi
 
-echo -e "Using cloud name: $CLOUD" >&3
+echo -e "Using cloud name: $CLOUD"
 
 # Exit when any command fails. To allow failing commands, add "|| true"
 set -o errexit
