@@ -59,7 +59,6 @@ function install_phoronix() {
   -e 's/<UploadResults>TRUE/<UploadResults>FALSE/' \
   -e 's/<PromptForTestIdentifier>TRUE/<PromptForTestIdentifier>FALSE/' \
   -e 's/<PromptForTestDescription>TRUE/<PromptForTestDescription>FALSE/' \
-  # -e 's/<PromptSaveName>FALSE/<PromptSaveName>TRUE/' \
   -e 's/<PromptSaveName>TRUE/<PromptSaveName>FALSE/' \
   -e 's/<RunAllTestCombinations>FALSE/<RunAllTestCombinations>TRUE/' \
   -e 's/<Configured>FALSE/<Configured>TRUE/' \
