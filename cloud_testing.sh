@@ -54,12 +54,18 @@ function run_phoronix() {
 function install_freebayes() {
   #Clone freebayes repo
   git clone --recursive git://github.com/ekg/freebayes.git
-  #Get reference for chr20
+
+  # Move into data dest folder
+  cd $DATA_FOLDER
+
+  # Get reference for chr20
   wget "http://hgdownload.cse.ucsc.edu/goldenPath/hg38/chromosomes/chr20.fa.gz" && gunzip chr20.fa.gz
 
-  #Get low cov 1MB BAM file for chr20
+  # Get low cov 1MB BAM file for chr20
   #TODO: how to get this?
 
+  # Got the data. Go back to $BASE_FOLDER
+  cd ..
 }
 
 # function run_freebayes() {
@@ -119,7 +125,8 @@ if [ -d "$HOME/.phoronix-test-suite" ]; then
   rm -rf ~/phoronix-test-suite
 fi
 
-mkdir ~/$BASE_FOLDER
+# Create folders structure in one go.
+mkdir -p ~/$BASE_FOLDER/$DATA_FOLDER
 
 LOG="$HOME/$BASE_FOLDER/cloud_testing_`date +\%y-\%m-\%d_\%H:\%M:\%S`.log"
 
