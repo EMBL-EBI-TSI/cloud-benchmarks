@@ -12,47 +12,7 @@ exec 3>&1 4>&2
 #Redirect STDOUT to log file
 exec 1>$LOG 2>&1
 
-# Help display
-usage='Usage:
- ebi-cloud-testing.sh [OPTIONS]
 
-OPTIONS:
-\n --cloud=<cloud>
-\t Cloud name to identify the results - REQUIRED
-'
-
-# From now on, normal stdout output should be appended with ">&3". e.g.:
-echo '
-  #######################################
-  ###  EBI Cloud Benchmarking script  ###
-  ###				      ###
-  ### Contacts:		              ###
-  ###  gianni@ebi.ac.uk               ###
-  ###  dario@ebi.ac.uk                ###
-  #######################################
-  Final log: '$LOG'
-  #######################################
-' >&3
-
-# Exit when any command fails. To allow failing commands, add "|| true"
-set -o errexit
-
-if [ -d "$HOME/cloud_testing" ]; then
-  echo "WARNING: old cloud_testing logs found. Getting rid of them"
-  rm -r ~/cloud_testing
-fi
-
-if [ -d "$HOME/phoronix-test-suite" ]; then
-  echo "WARNING: old phoronix-test-suite folder found. Getting rid of it."
-  rm -rf ~/phoronix-test-suite
-fi
-
-if [ -d "$HOME/.phoronix-test-suite" ]; then
-  echo "WARNING: old ~.phoronix-test-suite folder found. Getting rid of it."
-  rm -rf ~/phoronix-test-suite
-fi
-
-mkdir ~/cloud_testing
 
 function install_dependencies() {
   #Update yum cache
@@ -115,6 +75,67 @@ function install_freebayes() {
 # }
 
 # MAIN
+# Help display
+usage='Usage:
+ ebi-cloud-testing.sh [OPTIONS]
+
+OPTIONS:
+\n --cloud=<cloud>
+\t Cloud name to identify the results - REQUIRED
+'
+
+# From now on, normal stdout output should be appended with ">&3". e.g.:
+echo '
+  #######################################
+  ###  EBI Cloud Benchmarking script  ###
+  ###				      ###
+  ### Contacts:		              ###
+  ###  gianni@ebi.ac.uk               ###
+  ###  dario@ebi.ac.uk                ###
+  #######################################
+  Final log: '$LOG'
+  #######################################
+' >&3
+
+# Exit when any command fails. To allow failing commands, add "|| true"
+set -o errexit
+
+if [ -d "$HOME/cloud_testing" ]; then
+  echo "WARNING: old cloud_testing logs found. Getting rid of them"
+  rm -r ~/cloud_testing
+fi
+
+if [ -d "$HOME/phoronix-test-suite" ]; then
+  echo "WARNING: old phoronix-test-suite folder found. Getting rid of it."
+  rm -rf ~/phoronix-test-suite
+fi
+
+if [ -d "$HOME/.phoronix-test-suite" ]; then
+  echo "WARNING: old ~.phoronix-test-suite folder found. Getting rid of it."
+  rm -rf ~/phoronix-test-suite
+fi
+
+mkdir ~/cloud_testing
+
+while [ "$1" != "" ]; do
+    case $1 in
+        --cloud=* )    CLOUD=${1#*=};
+	               ;;
+        * )         echo -e "${usage}" >&3
+                    exit 1
+    esac
+    shift
+done
+
+# CLOUD must be defined
+if [ -z $CLOUD ] || [ $CLOUD == "" ];then
+    echo -e "${usage}" >&3
+    echo -e '\n\nFAILED. Please define a cloud name. Exiting now.\n' >&3 && exit 1
+fi
+
+echo -e "Using cloud name: $CLOUD" >&3
+
+
 echo "STEP 1 - Install tools and dependencies"
 echo "INSTALLING DEPENDENCIES"
 install_dependencies
