@@ -69,7 +69,7 @@ function install_phoronix() {
   phoronix-test-suite install sqlite
   # Run the test and save the results as batch_tests
   # echo "cloudtests" | phoronix-test-suite batch-benchmark sqlite
-   TEST_RESULTS_NAME="cloudtests" phoronix-test-suite batch-benchmark sqlite
+  TEST_RESULTS_NAME="cloudtests" phoronix-test-suite batch-benchmark sqlite
   # Run more benchmarks in a run
   # echo "cloudtests" | phoronix-test-suite batch-benchmark smallpt build-linux-kernel c-ray sqlite fourstones pybench
   # Export results in json file (use cvs if php < 5.4, i.e. Centos 6)
