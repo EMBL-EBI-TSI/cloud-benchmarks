@@ -85,15 +85,13 @@ echo '
   ###  gianni@ebi.ac.uk               ###
   ###  dario@ebi.ac.uk                ###
   #######################################
-  Final log: '$LOG'
-  #######################################
-' >&3
+'
 
 while [ "$1" != "" ]; do
     case $1 in
         --cloud=* )    CLOUD=${1#*=};
 	               ;;
-        * )         echo -e "${usage}" >&3
+        * )         echo -e "${usage}"
                     exit 1
     esac
     shift
