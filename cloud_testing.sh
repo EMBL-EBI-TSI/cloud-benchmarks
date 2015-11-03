@@ -4,16 +4,7 @@
 
 #TODO: use an ad-hoc folder named after the cloud we're testing, or add a
 #prefix to all files
-BASE_FOLDER="ebi_cloud_testing"
-LOG="$HOME/$BASE_FOLDER/cloud_testing_`date +\%y-\%m-\%d_\%H:\%M:\%S`.log"
-
-#File descriptors redirects
-exec 3>&1 4>&2
-
-#Redirect STDOUT to log file
-exec 1>$LOG 2>&1
-
-
+BASE_FOLDER="EBI_cloud_testing"
 
 function install_dependencies() {
   #Update yum cache
@@ -28,7 +19,7 @@ function install_phoronix() {
   git clone https://github.com/phoronix-test-suite/phoronix-test-suite.git
 
   # Add pts to local path
-  PATH="$PATH:$HOME/phoronix-test-suite"
+  PATH="$PATH:$HOME/$BASE_FOLDER/phoronix-test-suite"
 
   # Accept terms of pts (Y)
   echo "Y" | phoronix-test-suite batch-setup
@@ -53,10 +44,10 @@ function install_phoronix() {
 
 function run_phoronix() {
   #Run chosen phoronix tests
-  TEST_RESULTS_NAME=test_result phoronix-test-suite batch-benchmark smallpt build-linux-kernel c-ray sqlite fourstones pybench
-
+  # TEST_RESULTS_NAME=phoronix_tests phoronix-test-suite batch-benchmark smallpt build-linux-kernel c-ray sqlite fourstones pybench
+  TEST_RESULTS_NAME=phoronixtests phoronix-test-suite batch-benchmark sqlite
   #Write results in JSON
-  phoronix-test-suite result-file-to-json test_result > ~/test_result.json
+  phoronix-test-suite result-file-to-json phoronixtests > $HOME/$BASE_FOLDER/$CLOUD"_phoronix_results.json"
 }
 
 function install_freebayes() {
