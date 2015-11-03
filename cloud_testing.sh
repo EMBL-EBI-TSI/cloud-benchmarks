@@ -130,7 +130,7 @@ done
 # CLOUD must be defined
 if [ -z $CLOUD ] || [ $CLOUD == "" ];then
     echo -e "${usage}" >&3
-    echo -e '\n\nFAILED. Please define a cloud name. Exiting now.\n' >&3 && exit 1
+    echo -e '\n\nERROR: please provide a cloud name. Exiting now.\n' >&3 && exit 1
 fi
 
 echo -e "Using cloud name: $CLOUD" >&3
