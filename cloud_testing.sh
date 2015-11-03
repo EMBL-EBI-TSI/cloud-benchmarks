@@ -39,15 +39,14 @@ function install_phoronix() {
   -e 's/<RunAllTestCombinations>FALSE/<RunAllTestCombinations>TRUE/' \
   -e 's/<Configured>FALSE/<Configured>TRUE/' \
   ~/.phoronix-test-suite/user-config.xml
-
-  # Install the dependency for the test
 }
 
 function run_phoronix() {
   #Run chosen phoronix tests
   # TEST_RESULTS_NAME=phoronix_tests phoronix-test-suite batch-benchmark smallpt build-linux-kernel c-ray sqlite fourstones pybench
   TEST_RESULTS_NAME=phoronixtests phoronix-test-suite batch-benchmark sqlite
-  #Write results in JSON
+
+  #Export results in JSON
   phoronix-test-suite result-file-to-json phoronixtests > $HOME/$BASE_FOLDER/$CLOUD"_phoronix_results.json"
 }
 
@@ -116,12 +115,12 @@ echo -e "Using cloud name: $CLOUD"
 set -o errexit
 
 if [ -d "$HOME/$BASE_FOLDER" ]; then
-  echo "WARNING: old base folder ($BASE_FOLDER) found. Getting rid of it."
+  echo "WARNING: base folder already exists! ($BASE_FOLDER). Getting rid of it."
   rm -rf ~/$BASE_FOLDER
 fi
 
 if [ -d "$HOME/.phoronix-test-suite" ]; then
-  echo "WARNING: old ~.phoronix-test-suite folder found. Getting rid of it."
+  echo "WARNING: ~/.phoronix-test-suite folder already exits! Getting rid of it."
   rm -rf ~/phoronix-test-suite
 fi
 
