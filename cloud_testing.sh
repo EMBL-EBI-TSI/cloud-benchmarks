@@ -16,6 +16,11 @@ if [ -d "$HOME/phoronix-test-suite" ]; then
   rm -rf ~/phoronix-test-suite
 fi
 
+if [ -d "$HOME/.phoronix-test-suite" ]; then
+  echo "WARNING: old ~.phoronix-test-suite folder found. Getting rid of it."
+  rm -rf ~/phoronix-test-suite
+fi
+
 mkdir ~/cloud_testing
 
 #Redirect STDOUT to log file
