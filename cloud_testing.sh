@@ -119,14 +119,9 @@ echo -e "Using cloud name: $CLOUD" >&3
 # Exit when any command fails. To allow failing commands, add "|| true"
 set -o errexit
 
-if [ -d "$HOME/$BASE_FOLDER/cloud_testing" ]; then
-  echo "WARNING: old cloud_testing logs found. Getting rid of them"
-  rm -r ~/cloud_testing
-fi
-
-if [ -d "$HOME/phoronix-test-suite" ]; then
-  echo "WARNING: old phoronix-test-suite folder found. Getting rid of it."
-  rm -rf ~/phoronix-test-suite
+if [ -d "$HOME/$BASE_FOLDER" ]; then
+  echo "WARNING: old base folder ($BASE_FOLDER) found. Getting rid of it."
+  rm -r ~/$BASE_FOLDER
 fi
 
 if [ -d "$HOME/.phoronix-test-suite" ]; then
