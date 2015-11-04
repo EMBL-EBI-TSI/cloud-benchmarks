@@ -76,6 +76,24 @@ function install_freebayes() {
 #
 # }
 
+function install_gridftp() {
+    # Add Globus GridFTP repos
+    sudo rpm -U http://toolkit.globus.org/ftppub/gt6/installers/repo/globus-toolkit-repo-latest.noarch.rpm
+
+    # Install GridFTP
+    sudo yum -y install globus-gridftp
+
+
+    cat <<EOF > ~/.ssh/config
+
+    Host 192.168.2.107
+      User          $USER
+      Hostname      192.168.2.107
+      IdentityFile  $KEYPAIR
+EOF
+    echo "DONE"
+  }
+
 # MAIN
 # Help display
 usage='Usage:
@@ -84,9 +102,12 @@ usage='Usage:
 OPTIONS:
 \n --cloud=<cloud>
 \t Cloud name to identify the results - REQUIRED
+\n --user=<user>
+\t User to connect with to EBI GridFTP instance - REQUIRED
+\n --keypair=<key_path>
+\t Absolute path to key needed for SSH auth - REQUIRED
 '
 
-# From now on, normal stdout output should be appended with ">&3". e.g.:
 echo '
   #######################################
   ###  EBI Cloud Benchmarking script  ###
@@ -101,16 +122,34 @@ while [ "$1" != "" ]; do
     case $1 in
         --cloud=* )    CLOUD=${1#*=};
 	               ;;
+        --user=* )     USER=${1#*=};
+       	         ;;
+        --keypair=* )  KEYPAIR=${1#*=};
+                 ;;
         * )         echo -e "${usage}"
                     exit 1
     esac
     shift
 done
 
+
+
 # CLOUD must be defined
 if [ -z $CLOUD ] || [ $CLOUD == "" ];then
     echo -e "${usage}" >&3
-    echo -e '\n\nERROR: please provide a cloud name. Exiting now.\n' >&3 && exit 1
+    echo -e '\n\nERROR: please provide a cloud name. Exiting now.\n' && exit 1
+fi
+
+# USER must be defined
+if [ -z $USER ] || [ $USER == "" ];then
+    echo -e "${usage}" >&3
+    echo -e '\n\nERROR: please provide a username to set SSH config with. Exiting now.\n' && exit 1
+fi
+
+# KEYPAIR must be defined
+if [ -z $KEYPAIR ] || [ $KEYPAIR == "" ];then
+    echo -e "${usage}" >&3
+    echo -e '\n\nERROR: please provide a keypair to set SSH config with. Exiting now.\n' && exit 1
 fi
 
 echo -e "Using cloud name: $CLOUD"
@@ -139,14 +178,17 @@ trap 'exec 2>&4 1>&3' 0 1 2 3
 # Redirect stdout and stderr to a log file
 exec 1>$LOG 2>&1
 
+# From now on, normal stdout output should be appended with ">&3". e.g.:
 echo "STEP 1 - Install tools and dependencies"
 echo "INSTALLING DEPENDENCIES"
 cd $BASE_FOLDER || exit
 install_dependencies
-echo "INSTALLING PHORONIX TEST SUITE"
-install_phoronix
-echo "INSTALL FREEBAYES AND GET DATA"
-install_freebayes
+# echo "INSTALLING PHORONIX TEST SUITE"
+# install_phoronix
+# echo "INSTALL FREEBAYES AND GET DATA"
+# install_freebayes
+echo "INSTALL GRIDFTP-LITE"
+install_gridftp
 
-echo "STEP 2 - Running tests"
-run_phoronix
+#echo "STEP 2 - Running tests"
+#run_phoronix
