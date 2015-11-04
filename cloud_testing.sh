@@ -55,11 +55,21 @@ function run_phoronix() {
 }
 
 function install_freebayes() {
-  #Clone freebayes repo
+  # Clone freebayes repo
   git clone --recursive git://github.com/ekg/freebayes.git
 
+  # Compile it
+  cd freebayes || exit
+  make
+
+  # Add freebayes/bin to $PATH
+  PATH="$PATH:$HOME/$BASE_FOLDER/freebayes/bin"
+
+  # Go back to $BASE_FOLDER
+  cd .. || exit
+
   # Move into data dest folder
-  cd $DATA_FOLDER
+  cd $DATA_FOLDER || exit
 
   # Get reference for chr20
   wget "http://hgdownload.cse.ucsc.edu/goldenPath/hg38/chromosomes/chr20.fa.gz" && gunzip chr20.fa.gz
