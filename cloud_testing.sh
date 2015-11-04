@@ -46,7 +46,7 @@ function install_phoronix() {
 }
 
 function run_phoronix() {
-  #Run chosen phoronix tests
+  # Run chosen phoronix tests
   # TEST_RESULTS_NAME=phoronix_tests phoronix-test-suite batch-benchmark smallpt build-linux-kernel c-ray sqlite fourstones pybench
   TEST_RESULTS_NAME=phoronixtests phoronix-test-suite batch-benchmark sqlite
 
