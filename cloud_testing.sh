@@ -78,17 +78,17 @@ function install_freebayes() {
 
 function install_gridftp() {
     # Add Globus GridFTP repos
-    sudo rpm -U http://toolkit.globus.org/ftppub/gt6/installers/repo/globus-toolkit-repo-latest.noarch.rpm
+    sudo rpm -U  --replacepkgs http://toolkit.globus.org/ftppub/gt6/installers/repo/globus-toolkit-repo-latest.noarch.rpm
 
     # Install GridFTP
     sudo yum -y install globus-gridftp
 
-
+    echo "HERE"
     cat <<EOF > ~/.ssh/config
 
-    Host 192.168.2.107
+    Host $HOST
       User          $USER
-      Hostname      192.168.2.107
+      Hostname      $HOST
       IdentityFile  $KEYPAIR
 EOF
     echo "DONE"
@@ -122,6 +122,8 @@ while [ "$1" != "" ]; do
     case $1 in
         --cloud=* )    CLOUD=${1#*=};
 	               ;;
+        --host=* )    HOST=${1#*=};
+         	       ;;
         --user=* )     USER=${1#*=};
        	         ;;
         --keypair=* )  KEYPAIR=${1#*=};
@@ -138,6 +140,11 @@ done
 if [ -z $CLOUD ] || [ $CLOUD == "" ];then
     echo -e "${usage}" >&3
     echo -e '\n\nERROR: please provide a cloud name. Exiting now.\n' && exit 1
+fi
+
+if [ -z $HOST ] || [ $HOST == "" ];then
+    echo -e "${usage}" >&3
+    echo -e '\n\nERROR: please provide the hostname SSH should connect to. Exiting now.\n' && exit 1
 fi
 
 # USER must be defined
