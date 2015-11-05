@@ -148,24 +148,24 @@ done
 
 # CLOUD must be defined
 if [ -z $CLOUD ] || [ $CLOUD == "" ];then
-    echo -e "${usage}" >&3
+    echo -e "${usage}"
     echo -e '\n\nERROR: please provide a cloud name. Exiting now.\n' && exit 1
 fi
 
 if [ -z $HOST ] || [ $HOST == "" ];then
-    echo -e "${usage}" >&3
+    echo -e "${usage}"
     echo -e '\n\nERROR: please provide the hostname SSH should connect to. Exiting now.\n' && exit 1
 fi
 
 # USER must be defined
 if [ -z $USER ] || [ $USER == "" ];then
-    echo -e "${usage}" >&3
+    echo -e "${usage}"
     echo -e '\n\nERROR: please provide a username to set SSH config with. Exiting now.\n' && exit 1
 fi
 
 # KEYPAIR must be defined
 if [ -z $KEYPAIR ] || [ $KEYPAIR == "" ];then
-    echo -e "${usage}" >&3
+    echo -e "${usage}"
     echo -e '\n\nERROR: please provide a keypair to set SSH config with. Exiting now.\n' && exit 1
 fi
 
