@@ -65,26 +65,28 @@ function install_freebayes() {
   # Add freebayes/bin to $PATH
   PATH="$PATH:$HOME/$BASE_FOLDER/freebayes/bin"
 
-  # Go back to $BASE_FOLDER
-  cd .. || exit
-
-  # Move into data dest folder
-  cd $DATA_FOLDER || exit
+  # Move to $DATA_FOLDER
+  cd ../$DATA_FOLDER || exit
 
   # Get reference for chr20
-  wget "http://hgdownload.cse.ucsc.edu/goldenPath/hg38/chromosomes/chr20.fa.gz" && gunzip chr20.fa.gz
+  curl -O "http://hgdownload.cse.ucsc.edu/goldenPath/hg38/chromosomes/chr20.fa.gz" && gunzip chr20.fa.gz
+
+  # chr20 -> 20
+  sed -i 's/chr20/20/g' chr20.fa
 
   # Get low cov 1MB BAM file for chr20
-  #TODO: how to get this?
+  globus-url-copy -dbg "sshftp://$HOST:$PORT/~/CEUTrio.NA12878.chr20.1MB.bam" "file:///$HOME/$BASE_FOLDER/$DATA_FOLDER/CEUTrio.NA12878.chr20.1MB.bam"
+  globus-url-copy -dbg "sshftp://$HOST:$PORT/~/CEUTrio.NA12878.chr20.1MB.bam.bai" "file:///$HOME/$BASE_FOLDER/$DATA_FOLDER/CEUTrio.NA12878.chr20.1MB.bam.bai"
 
   # Got the data. Go back to $BASE_FOLDER
   cd ..
 }
 
-# function run_freebayes() {
-#   #Run freebayes
-#
-# }
+function run_freebayes() {
+   #Run freebayes
+   echo "Calling variants with Freebayes"
+   ./freebayes/bin/freebayes --fasta data/chr20.fa data/CEUTrio.NA12878.chr20.1MB.bam -v variants.vcf
+}
 
 function install_gridftp() {
     # Add Globus GridFTP repos
