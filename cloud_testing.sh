@@ -16,7 +16,7 @@ function install_dependencies() {
 
   #Freebayes (needs to be compiled)
   sudo yum -y group install "Development Tools"
-  sudo yum -y install zlib-devel
+  sudo yum -y install zlib-devel cmake
 }
 
 function install_phoronix() {
