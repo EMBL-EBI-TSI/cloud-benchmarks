@@ -137,8 +137,10 @@ while [ "$1" != "" ]; do
     case $1 in
         --cloud=* )    CLOUD=${1#*=};
 	               ;;
-        --host=* )    HOST=${1#*=};
+        --host=* )     HOST=${1#*=};
          	       ;;
+        --port=* )     PORT=${1#*=};
+        	       ;;
         --user=* )     USER=${1#*=};
        	         ;;
         --keypair=* )  KEYPAIR=${1#*=};
@@ -148,8 +150,6 @@ while [ "$1" != "" ]; do
     esac
     shift
 done
-
-
 
 # CLOUD must be defined
 if [ -z $CLOUD ] || [ $CLOUD == "" ];then
@@ -172,6 +172,12 @@ fi
 if [ -z $KEYPAIR ] || [ $KEYPAIR == "" ];then
     echo -e "${usage}"
     echo -e '\n\nERROR: please provide a keypair to set SSH config with. Exiting now.\n' && exit 1
+fi
+
+# PORT must be defined
+if [ -z $PORT ] || [ $PORT == "" ];then
+    echo -e "${usage}"
+    echo -e '\n\nERROR: please provide a port to set SSH config with. Exiting now.\n' && exit 1
 fi
 
 echo -e "Using cloud name: $CLOUD"
