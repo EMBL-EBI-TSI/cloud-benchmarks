@@ -7,6 +7,11 @@
 BASE_FOLDER="EBI_cloud_testing"
 DATA_FOLDER="data"
 
+#Define format string for the time command output
+#UserModeTime:KernelModeTime:ElapsedRealTimeSec:CPUPercentage:AverageTotMemory:
+#NumSwappedOut:ContextSwitchedInvoluntarily
+TIME_FORMAT_STRING="%U;%S;%e;%P;%K;%W;%c"
+
 function install_dependencies() {
   #Update yum cache
   sudo yum makecache fast
