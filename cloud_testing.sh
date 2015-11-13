@@ -238,9 +238,15 @@ fi
 set -o errexit
 
 if [ -d "$HOME/$BASE_FOLDER" ]; then
-  echo "WARNING: base folder already exists! ($BASE_FOLDER). Getting rid of it."
+  printf "WARNING: base folder already exists! (%s). Getting rid of it.\n" "$BASE_FOLDER"
   rm -rf ~/$BASE_FOLDER
 fi
+# Create folders structure.
+mkdir -p ~/$BASE_FOLDER/$DATA_FOLDER
+mkdir -p ~/$BASE_FOLDER/$RESULTS_FOLDER
+
+LOG="$HOME/$BASE_FOLDER/$RESULTS_FOLDER/cloud_testing_`date +\%y-\%m-\%d_\%H:\%M:\%S`.log"
+printf "Complete log of this run is available at: %s" "$LOG"
 
 if [ -d "$HOME/.phoronix-test-suite" ]; then
   echo "WARNING: ~/.phoronix-test-suite folder already exits! Getting rid of it."
