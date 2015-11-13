@@ -260,16 +260,24 @@ trap 'exec 2>&4 1>&3' 0 1 2 3
 exec 1>$LOG 2>&1
 
 # From now on, normal stdout output should be appended with ">&3". e.g.:
-echo "STEP 1 - Install tools and dependencies"
-echo "INSTALLING DEPENDENCIES"
+printf "\n\n---\nSTEP 1 - Installation\n---\n\n\n" >&3
 cd $BASE_FOLDER || exit
+printf "Installing dependencies\n" >&3
 install_dependencies
-# echo "INSTALLING PHORONIX TEST SUITE"
-# install_phoronix
-# echo "INSTALL FREEBAYES AND GET DATA"
-# install_freebayes
-echo "INSTALL GRIDFTP-LITE"
+printf "Installing GridFTP-Lite\n" >&3
 install_gridftp
+printf "\nInstalling Phoronix Test Suite\n" >&3
+install_phoronix
+printf "\nInstalling Freebayes and getting benchmarking data\n" >&3
+install_freebayes
 
-#echo "STEP 2 - Running tests"
-#run_phoronix
+printf "\n\n---\nSTEP 2 - Run tests\n---\n" >&3
+# run_phoronix
+# run_freebayes
+# run_gridftp
+
+printf "\n\n---\nSTEP 3 - Call home!\n---\n" >&3
+call_home
+
+printf "DONE!\n"
+printf "Results were successfully sent to EMBL-EBI!"
