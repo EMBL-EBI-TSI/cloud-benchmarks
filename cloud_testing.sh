@@ -249,14 +249,9 @@ LOG="$HOME/$BASE_FOLDER/$RESULTS_FOLDER/cloud_testing_`date +\%y-\%m-\%d_\%H:\%M
 printf "Complete log of this run is available at: %s" "$LOG"
 
 if [ -d "$HOME/.phoronix-test-suite" ]; then
-  echo "WARNING: ~/.phoronix-test-suite folder already exits! Getting rid of it."
+  printf "WARNING: ~/.phoronix-test-suite folder already exits! Getting rid of it.\n"
   rm -rf ~/phoronix-test-suite
 fi
-
-# Create folders structure in one go.
-mkdir -p ~/$BASE_FOLDER/$DATA_FOLDER
-
-LOG="$HOME/$BASE_FOLDER/cloud_testing_`date +\%y-\%m-\%d_\%H:\%M:\%S`.log"
 
 # Saves file descriptors for later being restored
 exec 3>&1 4>&2
