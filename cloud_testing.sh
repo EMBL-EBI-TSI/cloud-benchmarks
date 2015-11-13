@@ -28,12 +28,17 @@ function install_dependencies() {
 }
 
 function install_phoronix() {
+  printf "PHORONIX: Cloning Phoronix git repo...\n" >&3
   # get the latest stable version of phoronix test suite
   git clone https://github.com/phoronix-test-suite/phoronix-test-suite.git
+  cd phoronix-test-suite || exit
+  git checkout tags/v5.8.1
+  cd ..
 
   # Add pts to local path
   PATH="$PATH:$HOME/$BASE_FOLDER/phoronix-test-suite"
 
+  printf "PHORONIX: Preparing Phoronix for batch tests...\n" >&3
   # Accept terms of pts (Y)
   echo "Y" | phoronix-test-suite batch-setup
 
@@ -54,6 +59,7 @@ function install_phoronix() {
 }
 
 function run_phoronix() {
+  printf "PHORONIX: Running tests (this will take a while, ~30mins)\n" >&3
   # Run chosen phoronix tests
   # TEST_RESULTS_NAME=phoronix_tests phoronix-test-suite batch-benchmark smallpt build-linux-kernel c-ray sqlite fourstones pybench
   TEST_RESULTS_NAME=phoronixtests phoronix-test-suite batch-benchmark sqlite
