@@ -127,6 +127,29 @@ EOF
 
   }
 
+function run_gridftp() {
+  printf "GRIDFTP: Running GridFTP speed test...\n" >&3
+  printf "GRIDFTP: Moving data in...\n" >&3
+  /usr/bin/time -f $TIME_FORMAT_STRING -o $RESULTS_FOLDER/$CLOUD"_grid_test_time_in.csv" globus-url-copy -vb "sshftp://$HOST:$PORT/~/test_file.dat" "file:///$HOME/$BASE_FOLDER/$DATA_FOLDER/test_file.dat" > $RESULTS_FOLDER/$CLOUD"_grid_test_in.csv"
+  printf "GRIDFTP: Done.\n" >&3
+  printf "GRIDFTP: Moving data out...\n" >&3
+  /usr/bin/time -f $TIME_FORMAT_STRING -o $RESULTS_FOLDER/$CLOUD"_grid_test_time_out.csv" globus-url-copy -vb "file:///$HOME/$BASE_FOLDER/$DATA_FOLDER/test_file.dat" "sshftp://$HOST:$PORT/~/test_file2.dat"> $RESULTS_FOLDER/$CLOUD"_grid_test_out.csv"
+  printf "GRIDFTP: GridFTP speed test completed.\n" >&3
+}
+
+function call_home() {
+  #Compress $RESULTS_FOLDER
+  printf "CALLHOME: Compressing results...\n" >&3
+  archive_name=$CLOUD-"$(date +'%y-%m-%d_%H%M%S')"_results.tar.gz
+  tar -zcvf "$archive_name" $RESULTS_FOLDER > /dev/null
+
+  printf "CALLHOME: Calling home...\n" >&3
+  #Send everything back home via GridFTP
+  globus-url-copy "file:///$HOME/$BASE_FOLDER/$archive_name" "sshftp://$HOST:$PORT/~/$archive_name"
+  printf "CALLHOME: Hanging up...\n" >&3
+  printf "CALLHOME: Done!\n" >&3
+}
+
 # MAIN
 # Help display
 usage='Usage:
