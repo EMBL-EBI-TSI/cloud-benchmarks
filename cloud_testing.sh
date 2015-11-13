@@ -159,12 +159,12 @@ OPTIONS:
 \n --cloud=<cloud>
 \t Cloud name to identify the results - REQUIRED
 \n --user=<user>
-\t User to connect with to EBI GridFTP instance - REQUIRED
+\t User to connect with to the EBI GridFTP instance - REQUIRED
 \n --keypair=<key_path>
 \t Absolute path to key needed for SSH auth - REQUIRED
 '
 
-echo '
+printf '
   #######################################
   ###  EBI Cloud Benchmarking script  ###
   ###				      ###
