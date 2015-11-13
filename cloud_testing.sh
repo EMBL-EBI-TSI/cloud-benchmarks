@@ -221,7 +221,18 @@ if [ -z $PORT ] || [ $PORT == "" ];then
   printf "\n\nERROR: please provide a port to set SSH config with. Exiting now.\n" && exit 1
 fi
 
-echo -e "Using cloud name: $CLOUD"
+printf "\n\nUsing cloud name: %s\n\n" "$CLOUD"
+RESULTS_FOLDER=$CLOUD"_results"
+
+# Check kernel release. Must be el7.
+kernel=`uname -r`
+
+if [[ $kernel != *"el7"* ]]; then
+  printf "\nWARNING:
+  Your kernel release is different from el7!\n
+  This benchmarking script is based on a el7 reference configuration.\n
+  "
+fi
 
 # Exit when any command fails. To allow failing commands, add "|| true"
 set -o errexit
