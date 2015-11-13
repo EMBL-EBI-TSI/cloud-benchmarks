@@ -69,8 +69,12 @@ function run_phoronix() {
 }
 
 function install_freebayes() {
+  printf "FREEBAYES: Cloning Freebayes repo and compiling it\n" >&3
   # Clone freebayes repo
   git clone --recursive git://github.com/ekg/freebayes.git
+  cd freebayes || exit
+  git checkout tags/v0.9.21
+  cd ..
 
   # Compile it
   cd freebayes || exit
@@ -83,23 +87,22 @@ function install_freebayes() {
   cd ../$DATA_FOLDER || exit
 
   # Get reference for chr20
-  curl -O "http://hgdownload.cse.ucsc.edu/goldenPath/hg38/chromosomes/chr20.fa.gz" && gunzip chr20.fa.gz
+  printf "FREEBAYES: Downloading chr20 from Ensembl\n" >&3
+  curl -O "ftp://ftp.ensembl.org/pub/release-82/fasta/homo_sapiens/dna/Homo_sapiens.GRCh38.dna.chromosome.20.fa.gz" && gunzip Homo_sapiens.GRCh38.dna.chromosome.20.fa.gz
 
-  # chr20 -> 20
-  sed -i 's/chr20/20/g' chr20.fa
-
-  # Get low cov 1MB BAM file for chr20
-  globus-url-copy -dbg "sshftp://$HOST:$PORT/~/CEUTrio.NA12878.chr20.1MB.bam" "file:///$HOME/$BASE_FOLDER/$DATA_FOLDER/CEUTrio.NA12878.chr20.1MB.bam"
-  globus-url-copy -dbg "sshftp://$HOST:$PORT/~/CEUTrio.NA12878.chr20.1MB.bam.bai" "file:///$HOME/$BASE_FOLDER/$DATA_FOLDER/CEUTrio.NA12878.chr20.1MB.bam.bai"
-
-  # Got the data. Go back to $BASE_FOLDER
+  # Back to $BASE_FOLDER
   cd ..
+
+  # Get low cov 1MB BAM file for chr20 from EBI server
+  printf "FREEBAYES: Copying BAM/BAI from EBI servers...\n" >&3
+  /usr/bin/time -f $TIME_FORMAT_STRING -o $RESULTS_FOLDER/$CLOUD"_grid_bam.csv" globus-url-copy -vb "sshftp://$HOST:$PORT/~/CEUTrio.NA12878.chr20.1MB.bam" "file:///$HOME/$BASE_FOLDER/$DATA_FOLDER/CEUTrio.NA12878.chr20.1MB.bam"
+  /usr/bin/time -f $TIME_FORMAT_STRING -o $RESULTS_FOLDER/$CLOUD"_grid_bai.csv" globus-url-copy -vb "sshftp://$HOST:$PORT/~/CEUTrio.NA12878.chr20.1MB.bam.bai" "file:///$HOME/$BASE_FOLDER/$DATA_FOLDER/CEUTrio.NA12878.chr20.1MB.bam.bai"
 }
 
 function run_freebayes() {
-   #Run freebayes
-   echo "Calling variants with Freebayes"
-   ./freebayes/bin/freebayes --fasta data/chr20.fa data/CEUTrio.NA12878.chr20.1MB.bam -v variants.vcf
+   #Run Freebayes
+   printf "FREEBAYES: Calling variants with Freebayes (this will take a while, ~20 mins)\n" >&3
+   /usr/bin/time -f $TIME_FORMAT_STRING -o $RESULTS_FOLDER/$CLOUD"_freebayes.csv" ./freebayes/bin/freebayes --fasta $DATA_FOLDER/Homo_sapiens.GRCh38.dna.chromosome.20.fa $DATA_FOLDER/CEUTrio.NA12878.chr20.1MB.bam -v $RESULTS_FOLDER/variants.vcf
 }
 
 function install_gridftp() {
