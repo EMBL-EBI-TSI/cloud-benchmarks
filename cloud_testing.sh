@@ -65,7 +65,7 @@ function run_phoronix() {
   TEST_RESULTS_NAME=phoronixtests phoronix-test-suite batch-benchmark sqlite
 
   #Export results in JSON
-  phoronix-test-suite result-file-to-json phoronixtests > $HOME/$BASE_FOLDER/$CLOUD"_phoronix_results.json"
+  phoronix-test-suite result-file-to-json phoronixtests > $RESULTS_FOLDER/$CLOUD"_phoronix_results.json"
 }
 
 function install_freebayes() {
