@@ -43,7 +43,8 @@ function install_phoronix() {
   echo "Y" | phoronix-test-suite batch-setup
 
   # Collect information about local system
-  # phoronix-test-suite system-info
+  phoronix-test-suite system-info > $RESULTS_FOLDER/$CLOUD"_system-info"
+  # phoronix-test-suite detailed-system-info > $RESULTS_FOLDER/$CLOUD"_detailed-system-info"
 
   # Configure pts to run in batch mode
   sed -i \
