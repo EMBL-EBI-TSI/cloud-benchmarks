@@ -43,7 +43,8 @@ function install_phoronix() {
   echo "Y" | phoronix-test-suite batch-setup
 
   # Collect information about local system
-  # phoronix-test-suite system-info
+  phoronix-test-suite system-info > $RESULTS_FOLDER/$CLOUD"_system-info"
+  # phoronix-test-suite detailed-system-info > $RESULTS_FOLDER/$CLOUD"_detailed-system-info"
 
   # Configure pts to run in batch mode
   sed -i \
@@ -257,26 +258,26 @@ fi
 exec 3>&1 4>&2
 trap 'exec 2>&4 1>&3' 0 1 2 3
 # Redirect stdout and stderr to a log file
-exec 1>$LOG 2>&1
+exec 1>>$LOG 2>&1
 
 # From now on, normal stdout output should be appended with ">&3". e.g.:
-printf "\n\n---\nSTEP 1 - Installation\n---\n\n\n" >&3
+printf "\n\n---\nSTEP 1 - Installation\n---\n\n\n" | tee -a $LOG >&3
 cd $BASE_FOLDER || exit
-printf "Installing dependencies\n" >&3
+printf "Installing dependencies\n" | tee -a $LOG >&3
 install_dependencies
-printf "Installing GridFTP-Lite\n" >&3
+printf "Installing GridFTP-Lite\n" | tee -a $LOG >&3
 install_gridftp
-printf "\nInstalling Phoronix Test Suite\n" >&3
+printf "\nInstalling Phoronix Test Suite\n" | tee -a $LOG >&3
 install_phoronix
-printf "\nInstalling Freebayes and getting benchmarking data\n" >&3
+printf "\nInstalling Freebayes and getting benchmarking data\n" | tee -a $LOG >&3
 install_freebayes
 
-printf "\n\n---\nSTEP 2 - Run tests\n---\n" >&3
+printf "\n\n---\nSTEP 2 - Run tests\n---\n" | tee -a $LOG >&3
 # run_phoronix
 # run_freebayes
 # run_gridftp
 
-printf "\n\n---\nSTEP 3 - Call home!\n---\n" >&3
+printf "\n\n---\nSTEP 3 - Call home!\n---\n" | tee -a $LOG >&3
 call_home
 
 printf "DONE!\n"
