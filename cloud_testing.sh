@@ -17,7 +17,7 @@ function install_dependencies() {
   sudo yum makecache fast
 
   #Phoronix
-  sudo yum -y install git php php-xml xdg-utils
+  sudo yum -y install git php php-xml xdg-utils bc
 
   #Freebayes (needs to be compiled)
   sudo yum -y group install "Development Tools"
