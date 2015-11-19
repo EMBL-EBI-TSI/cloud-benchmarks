@@ -130,10 +130,10 @@ EOF
 function run_gridftp() {
   printf "GRIDFTP: Running GridFTP speed test...\n" >&3
   printf "GRIDFTP: Moving data in...\n" >&3
-  /usr/bin/time -f $TIME_FORMAT_STRING -o $RESULTS_FOLDER/$CLOUD"_grid_test_time_in.csv" globus-url-copy -vb "sshftp://$HOST:$PORT/~/test_file.dat" "file:///$HOME/$BASE_FOLDER/$DATA_FOLDER/test_file.dat" > $RESULTS_FOLDER/$CLOUD"_grid_test_in.csv"
+  /usr/bin/time -f $TIME_FORMAT_STRING -o $RESULTS_FOLDER/$CLOUD"_grid_test_time_in.csv" globus-url-copy -vb "sshftp://$HOST:$PORT/~/test_file.dat" "file:///$HOME/$BASE_FOLDER/$DATA_FOLDER/test_file.dat" > $RESULTS_FOLDER/$CLOUD"_grid_test_in.log"
   printf "GRIDFTP: Done.\n" >&3
   printf "GRIDFTP: Moving data out...\n" >&3
-  /usr/bin/time -f $TIME_FORMAT_STRING -o $RESULTS_FOLDER/$CLOUD"_grid_test_time_out.csv" globus-url-copy -vb "file:///$HOME/$BASE_FOLDER/$DATA_FOLDER/test_file.dat" "sshftp://$HOST:$PORT/~/test_file2.dat"> $RESULTS_FOLDER/$CLOUD"_grid_test_out.csv"
+  /usr/bin/time -f $TIME_FORMAT_STRING -o $RESULTS_FOLDER/$CLOUD"_grid_test_time_out.csv" globus-url-copy -vb "file:///$HOME/$BASE_FOLDER/$DATA_FOLDER/test_file.dat" "sshftp://$HOST:$PORT/~/test_file2.dat"> $RESULTS_FOLDER/$CLOUD"_grid_test_out.log"
   printf "GRIDFTP: GridFTP speed test completed.\n" >&3
 }
 
@@ -246,7 +246,7 @@ mkdir -p ~/$BASE_FOLDER/$DATA_FOLDER
 mkdir -p ~/$BASE_FOLDER/$RESULTS_FOLDER
 
 LOG="$HOME/$BASE_FOLDER/$RESULTS_FOLDER/cloud_testing_`date +\%y-\%m-\%d_\%H:\%M:\%S`.log"
-printf "Complete log of this run is available at: %s" "$LOG"
+printf "Complete log of this run is available at: %s\n" "$LOG"
 
 if [ -d "$HOME/.phoronix-test-suite" ]; then
   printf "WARNING: ~/.phoronix-test-suite folder already exits! Getting rid of it.\n"
