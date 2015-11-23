@@ -203,7 +203,12 @@ fi
 
 if [ -z $FLAVOR ] || [ $FLAVOR == "" ];then
   printf "%s" "${usage}"
-  printf "\n\nERROR: please provide the hostname SSH should connect to. Exiting now.\n" && exit 1
+  printf '\n\nERROR: please provide a flavor name. Exiting now.\n' && exit 1
+fi
+
+if [ -z $SERVER ] || [ $SERVER == "" ];then
+  printf "%s" "${usage}"
+  printf "\n\nERROR: please provide the SERVERname SSH should connect to. Exiting now.\n" && exit 1
 fi
 
 # USER must be defined
