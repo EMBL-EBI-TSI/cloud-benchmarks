@@ -28,7 +28,7 @@ function install_dependencies() {
 }
 
 function install_phoronix() {
-  printf "PHORONIX: Cloning Phoronix git repo...\n" >&3
+  printf "PHORONIX: Cloning Phoronix git repo...\n" | tee -a $LOG >&3
   # get the latest stable version of phoronix test suite
   git clone https://github.com/phoronix-test-suite/phoronix-test-suite.git
   cd phoronix-test-suite || exit
@@ -38,7 +38,7 @@ function install_phoronix() {
   # Add pts to local path
   PATH="$PATH:$HOME/$BASE_FOLDER/phoronix-test-suite"
 
-  printf "PHORONIX: Preparing Phoronix for batch tests...\n" >&3
+  printf "PHORONIX: Preparing Phoronix for batch tests...\n" | tee -a $LOG >&3
   # Accept terms of pts (Y)
   echo "Y" | phoronix-test-suite batch-setup
 
@@ -60,7 +60,7 @@ function install_phoronix() {
 }
 
 function run_phoronix() {
-  printf "PHORONIX: Running tests (this will take a while, ~30mins)\n" >&3
+  printf "PHORONIX: Running tests (this will take a while, ~30mins)\n" | tee -a $LOG >&3
   # Run chosen phoronix tests
   # TEST_RESULTS_NAME=phoronix_tests phoronix-test-suite batch-benchmark smallpt build-linux-kernel c-ray sqlite fourstones pybench
   TEST_RESULTS_NAME=$LOG_PREFIX"_phoronixtests" phoronix-test-suite batch-benchmark sqlite
@@ -70,7 +70,7 @@ function run_phoronix() {
 }
 
 function install_freebayes() {
-  printf "FREEBAYES: Cloning Freebayes repo and compiling it\n" >&3
+  printf "FREEBAYES: Cloning Freebayes repo and compiling it\n" | tee -a $LOG >&3
   # Clone freebayes repo
   git clone --recursive git://github.com/ekg/freebayes.git
   cd freebayes || exit
@@ -88,21 +88,21 @@ function install_freebayes() {
   cd ../$DATA_FOLDER || exit
 
   # Get reference for chr20
-  printf "FREEBAYES: Downloading chr20 from Ensembl\n" >&3
+  printf "FREEBAYES: Downloading chr20 from Ensembl\n" | tee -a $LOG >&3
   curl -O "ftp://ftp.ensembl.org/pub/release-82/fasta/homo_sapiens/dna/Homo_sapiens.GRCh38.dna.chromosome.20.fa.gz" && gunzip Homo_sapiens.GRCh38.dna.chromosome.20.fa.gz
 
   # Back to $BASE_FOLDER
   cd ..
 
   # Get low cov 1MB BAM file for chr20 from EBI server
-  printf "FREEBAYES: Copying BAM/BAI from EBI servers...\n" >&3
+  printf "FREEBAYES: Copying BAM/BAI from EBI servers...\n" | tee -a $LOG >&3
   /usr/bin/time -f $TIME_FORMAT_STRING -o $RESULTS_FOLDER/$LOG_PREFIX"_grid_bam.csv" globus-url-copy -vb "sshftp://$SERVER:$PORT/~/CEUTrio.NA12878.chr20.1MB.bam" "file:///$HOME/$BASE_FOLDER/$DATA_FOLDER/CEUTrio.NA12878.chr20.1MB.bam"
   /usr/bin/time -f $TIME_FORMAT_STRING -o $RESULTS_FOLDER/$LOG_PREFIX"_grid_bai.csv" globus-url-copy -vb "sshftp://$SERVER:$PORT/~/CEUTrio.NA12878.chr20.1MB.bam.bai" "file:///$HOME/$BASE_FOLDER/$DATA_FOLDER/CEUTrio.NA12878.chr20.1MB.bam.bai"
 }
 
 function run_freebayes() {
    #Run Freebayes
-   printf "FREEBAYES: Calling variants with Freebayes (this will take a while, ~20 mins)\n" >&3
+   printf "FREEBAYES: Calling variants with Freebayes (this will take a while, ~20 mins)\n" | tee -a $LOG >&3
    /usr/bin/time -f $TIME_FORMAT_STRING -o $RESULTS_FOLDER/$LOG_PREFIX"_freebayes.csv" ./freebayes/bin/freebayes --fasta $DATA_FOLDER/Homo_sapiens.GRCh38.dna.chromosome.20.fa $DATA_FOLDER/CEUTrio.NA12878.chr20.1MB.bam -v $RESULTS_FOLDER/variants.vcf
 }
 
@@ -129,26 +129,26 @@ EOF
   }
 
 function run_gridftp() {
-  printf "GRIDFTP: Running GridFTP speed test...\n" >&3
-  printf "GRIDFTP: Moving data in...\n" >&3
+  printf "GRIDFTP: Running GridFTP speed test...\n" | tee -a $LOG >&3
+  printf "GRIDFTP: Moving data in...\n" | tee -a $LOG >&3
   /usr/bin/time -f $TIME_FORMAT_STRING -o $RESULTS_FOLDER/$LOG_PREFIX"_grid_test_time_in.csv" globus-url-copy -vb "sshftp://$SERVER:$PORT/~/test_file.dat" "file:///$HOME/$BASE_FOLDER/$DATA_FOLDER/test_file.dat" > $RESULTS_FOLDER/$CLOUD"_grid_test_in.log"
-  printf "GRIDFTP: Done.\n" >&3
-  printf "GRIDFTP: Moving data out...\n" >&3
+  printf "GRIDFTP: Done.\n" | tee -a $LOG >&3
+  printf "GRIDFTP: Moving data out...\n" | tee -a $LOG >&3
   /usr/bin/time -f $TIME_FORMAT_STRING -o $RESULTS_FOLDER/$LOG_PREFIX"_grid_test_time_out.csv" globus-url-copy -vb "file:///$HOME/$BASE_FOLDER/$DATA_FOLDER/test_file.dat" "sshftp://$SERVER:$PORT/~/test_file2.dat"> $RESULTS_FOLDER/$CLOUD"_grid_test_out.log"
-  printf "GRIDFTP: GridFTP speed test completed.\n" >&3
+  printf "GRIDFTP: GridFTP speed test completed.\n" | tee -a $LOG >&3
 }
 
 function call_home() {
   #Compress $RESULTS_FOLDER
-  printf "CALLHOME: Compressing results...\n" >&3
+  printf "CALLHOME: Compressing results...\n" | tee -a $LOG >&3
   archive_name=$LOG_PREFIX-"$(date +'%y-%m-%d_%H%M%S')"_results.tar.gz
   tar -zcvf "$archive_name" $RESULTS_FOLDER > /dev/null
 
-  printf "CALLHOME: Calling home...\n" >&3
+  printf "CALLHOME: Calling home...\n" | tee -a $LOG >&3
   #Send everything back home via GridFTP
   globus-url-copy "file:///$HOME/$BASE_FOLDER/$archive_name" "sshftp://$SERVER:$PORT/~/$archive_name"
-  printf "CALLHOME: Hanging up...\n" >&3
-  printf "CALLHOME: Done!\n" >&3
+  printf "CALLHOME: Hanging up...\n" | tee -a $LOG >&3
+  printf "CALLHOME: Done!\n" | tee -a $LOG >&3
 }
 
 # MAIN
