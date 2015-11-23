@@ -155,18 +155,18 @@ usage='Usage:
  ebi-cloud-testing.sh [OPTIONS]
 
 OPTIONS:
-\n --cloud=<cloud>
-\t Cloud name to identify the results - REQUIRED
-\n --flavor=<flavor>
-\t Flavor name to identify the results - REQUIRED
-\n --user=<user>
-\t User to connect with to the EBI GridFTP instance - REQUIRED
-\n --keypair=<key_path>
-\t Absolute path to key needed for SSH auth - REQUIRED
-\n --server=<server>
-\t Hostname of the remote EBI server to use for network testing - REQUIRED
-\n --port=<port>
-\t Network port of the remote EBI server to use for network testing - REQUIRED
+--cloud=<cloud>
+Cloud name to identify the results - REQUIRED
+--flavor=<flavor>
+Flavor name to identify the results - REQUIRED
+--user=<user>
+User to connect with to the EBI GridFTP instance - REQUIRED
+--keypair=<key_path>
+Absolute path to key needed for SSH auth - REQUIRED
+--server=<server>
+Hostname of the remote EBI server to use for network testing - REQUIRED
+--port=<port>
+Network port of the remote EBI server to use for network testing - REQUIRED
 '
 
 printf '
@@ -212,7 +212,7 @@ fi
 
 if [ -z $SERVER ] || [ $SERVER == "" ];then
   printf "%s" "${usage}"
-  printf "\n\nERROR: please provide the SERVERname SSH should connect to. Exiting now.\n" && exit 1
+  printf "\n\nERROR: please provide the server name SSH should connect to. Exiting now.\n" && exit 1
 fi
 
 # USER must be defined
@@ -262,7 +262,7 @@ LOG="$HOME/$BASE_FOLDER/$RESULTS_FOLDER/$LOG_PREFIX"_`date +\%y-\%m-\%d_\%H:\%M:
 printf "Complete log of this run is available at: %s\n" "$LOG"
 
 if [ -d "$HOME/.phoronix-test-suite" ]; then
-  printf "WARNING: ~/.phoronix-test-suite folder already exits! Getting rid of it.\n"
+  printf "WARNING: ~/.phoronix-test-suite folder already exists! Getting rid of it.\n"
   rm -rf ~/phoronix-test-suite
 fi
 
