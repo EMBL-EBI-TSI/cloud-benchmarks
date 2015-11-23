@@ -165,7 +165,7 @@ OPTIONS:
 \t Absolute path to key needed for SSH auth - REQUIRED
 \n --server=<server>
 \t Hostname of the remote EBI server to use for network testing - REQUIRED
-\n --keypair=<key_path>
+\n --port=<port>
 \t Network port of the remote EBI server to use for network testing - REQUIRED
 '
 
