@@ -159,10 +159,16 @@ usage='Usage:
 OPTIONS:
 \n --cloud=<cloud>
 \t Cloud name to identify the results - REQUIRED
+\n --flavor=<flavor>
+\t Flavor name to identify the results - REQUIRED
 \n --user=<user>
 \t User to connect with to the EBI GridFTP instance - REQUIRED
 \n --keypair=<key_path>
 \t Absolute path to key needed for SSH auth - REQUIRED
+\n --server=<server>
+\t Hostname of the remote EBI server to use for network testing - REQUIRED
+\n --keypair=<key_path>
+\t Network port of the remote EBI server to use for network testing - REQUIRED
 '
 
 printf '
