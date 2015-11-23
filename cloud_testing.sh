@@ -43,7 +43,7 @@ function install_phoronix() {
   echo "Y" | phoronix-test-suite batch-setup
 
   # Collect information about local system
-  phoronix-test-suite system-info > $RESULTS_FOLDER/$CLOUD"_system-info"
+  phoronix-test-suite system-info > $RESULTS_FOLDER/$LOG_PREFIX"_system-info"
   # phoronix-test-suite detailed-system-info > $RESULTS_FOLDER/$CLOUD"_detailed-system-info"
 
   # Configure pts to run in batch mode
@@ -63,10 +63,10 @@ function run_phoronix() {
   printf "PHORONIX: Running tests (this will take a while, ~30mins)\n" >&3
   # Run chosen phoronix tests
   # TEST_RESULTS_NAME=phoronix_tests phoronix-test-suite batch-benchmark smallpt build-linux-kernel c-ray sqlite fourstones pybench
-  TEST_RESULTS_NAME=$CLOUD"_phoronixtests" phoronix-test-suite batch-benchmark sqlite
+  TEST_RESULTS_NAME=$LOG_PREFIX"_phoronixtests" phoronix-test-suite batch-benchmark sqlite
 
   #Export results in JSON
-  phoronix-test-suite result-file-to-json $CLOUD"_phoronixtests" > $RESULTS_FOLDER/$CLOUD"_phoronix_results.json"
+  phoronix-test-suite result-file-to-json $LOG_PREFIX"_phoronixtests" > $RESULTS_FOLDER/$LOG_PREFIX"_phoronix_results.json"
 }
 
 function install_freebayes() {
@@ -96,14 +96,14 @@ function install_freebayes() {
 
   # Get low cov 1MB BAM file for chr20 from EBI server
   printf "FREEBAYES: Copying BAM/BAI from EBI servers...\n" >&3
-  /usr/bin/time -f $TIME_FORMAT_STRING -o $RESULTS_FOLDER/$CLOUD"_grid_bam.csv" globus-url-copy -vb "sshftp://$HOST:$PORT/~/CEUTrio.NA12878.chr20.1MB.bam" "file:///$HOME/$BASE_FOLDER/$DATA_FOLDER/CEUTrio.NA12878.chr20.1MB.bam"
-  /usr/bin/time -f $TIME_FORMAT_STRING -o $RESULTS_FOLDER/$CLOUD"_grid_bai.csv" globus-url-copy -vb "sshftp://$HOST:$PORT/~/CEUTrio.NA12878.chr20.1MB.bam.bai" "file:///$HOME/$BASE_FOLDER/$DATA_FOLDER/CEUTrio.NA12878.chr20.1MB.bam.bai"
+  /usr/bin/time -f $TIME_FORMAT_STRING -o $RESULTS_FOLDER/$LOG_PREFIX"_grid_bam.csv" globus-url-copy -vb "sshftp://$SERVER:$PORT/~/CEUTrio.NA12878.chr20.1MB.bam" "file:///$HOME/$BASE_FOLDER/$DATA_FOLDER/CEUTrio.NA12878.chr20.1MB.bam"
+  /usr/bin/time -f $TIME_FORMAT_STRING -o $RESULTS_FOLDER/$LOG_PREFIX"_grid_bai.csv" globus-url-copy -vb "sshftp://$SERVER:$PORT/~/CEUTrio.NA12878.chr20.1MB.bam.bai" "file:///$HOME/$BASE_FOLDER/$DATA_FOLDER/CEUTrio.NA12878.chr20.1MB.bam.bai"
 }
 
 function run_freebayes() {
    #Run Freebayes
    printf "FREEBAYES: Calling variants with Freebayes (this will take a while, ~20 mins)\n" >&3
-   /usr/bin/time -f $TIME_FORMAT_STRING -o $RESULTS_FOLDER/$CLOUD"_freebayes.csv" ./freebayes/bin/freebayes --fasta $DATA_FOLDER/Homo_sapiens.GRCh38.dna.chromosome.20.fa $DATA_FOLDER/CEUTrio.NA12878.chr20.1MB.bam -v $RESULTS_FOLDER/variants.vcf
+   /usr/bin/time -f $TIME_FORMAT_STRING -o $RESULTS_FOLDER/$LOG_PREFIX"_freebayes.csv" ./freebayes/bin/freebayes --fasta $DATA_FOLDER/Homo_sapiens.GRCh38.dna.chromosome.20.fa $DATA_FOLDER/CEUTrio.NA12878.chr20.1MB.bam -v $RESULTS_FOLDER/variants.vcf
 }
 
 function install_gridftp() {
@@ -131,22 +131,22 @@ EOF
 function run_gridftp() {
   printf "GRIDFTP: Running GridFTP speed test...\n" >&3
   printf "GRIDFTP: Moving data in...\n" >&3
-  /usr/bin/time -f $TIME_FORMAT_STRING -o $RESULTS_FOLDER/$CLOUD"_grid_test_time_in.csv" globus-url-copy -vb "sshftp://$HOST:$PORT/~/test_file.dat" "file:///$HOME/$BASE_FOLDER/$DATA_FOLDER/test_file.dat" > $RESULTS_FOLDER/$CLOUD"_grid_test_in.log"
+  /usr/bin/time -f $TIME_FORMAT_STRING -o $RESULTS_FOLDER/$LOG_PREFIX"_grid_test_time_in.csv" globus-url-copy -vb "sshftp://$SERVER:$PORT/~/test_file.dat" "file:///$HOME/$BASE_FOLDER/$DATA_FOLDER/test_file.dat" > $RESULTS_FOLDER/$CLOUD"_grid_test_in.log"
   printf "GRIDFTP: Done.\n" >&3
   printf "GRIDFTP: Moving data out...\n" >&3
-  /usr/bin/time -f $TIME_FORMAT_STRING -o $RESULTS_FOLDER/$CLOUD"_grid_test_time_out.csv" globus-url-copy -vb "file:///$HOME/$BASE_FOLDER/$DATA_FOLDER/test_file.dat" "sshftp://$HOST:$PORT/~/test_file2.dat"> $RESULTS_FOLDER/$CLOUD"_grid_test_out.log"
+  /usr/bin/time -f $TIME_FORMAT_STRING -o $RESULTS_FOLDER/$LOG_PREFIX"_grid_test_time_out.csv" globus-url-copy -vb "file:///$HOME/$BASE_FOLDER/$DATA_FOLDER/test_file.dat" "sshftp://$SERVER:$PORT/~/test_file2.dat"> $RESULTS_FOLDER/$CLOUD"_grid_test_out.log"
   printf "GRIDFTP: GridFTP speed test completed.\n" >&3
 }
 
 function call_home() {
   #Compress $RESULTS_FOLDER
   printf "CALLHOME: Compressing results...\n" >&3
-  archive_name=$CLOUD-"$(date +'%y-%m-%d_%H%M%S')"_results.tar.gz
+  archive_name=$LOG_PREFIX-"$(date +'%y-%m-%d_%H%M%S')"_results.tar.gz
   tar -zcvf "$archive_name" $RESULTS_FOLDER > /dev/null
 
   printf "CALLHOME: Calling home...\n" >&3
   #Send everything back home via GridFTP
-  globus-url-copy "file:///$HOME/$BASE_FOLDER/$archive_name" "sshftp://$HOST:$PORT/~/$archive_name"
+  globus-url-copy "file:///$HOME/$BASE_FOLDER/$archive_name" "sshftp://$SERVER:$PORT/~/$archive_name"
   printf "CALLHOME: Hanging up...\n" >&3
   printf "CALLHOME: Done!\n" >&3
 }
@@ -179,7 +179,9 @@ while [ "$1" != "" ]; do
     case $1 in
         --cloud=* )    CLOUD=${1#*=};
 	               ;;
-        --host=* )     HOST=${1#*=};
+        --flavor=* )    FLAVOR=${1#*=};
+         	       ;;
+        --server=* )     SERVER=${1#*=};
          	       ;;
         --port=* )     PORT=${1#*=};
         	       ;;
@@ -222,8 +224,9 @@ if [ -z $PORT ] || [ $PORT == "" ];then
   printf "\n\nERROR: please provide a port to set SSH config with. Exiting now.\n" && exit 1
 fi
 
-printf "\n\nUsing cloud name: %s\n\n" "$CLOUD"
-RESULTS_FOLDER=$CLOUD"_results"
+printf "\n\nUsing cloud name %s, flavor %s\n\n" "$CLOUD" "$FLAVOR"
+LOG_PREFIX="$CLOUD"_"$FLAVOR"
+RESULTS_FOLDER="$LOG_PREFIX"_results
 
 # Check kernel release. Must be el7.
 kernel=`uname -r`
@@ -246,7 +249,7 @@ fi
 mkdir -p ~/$BASE_FOLDER/$DATA_FOLDER
 mkdir -p ~/$BASE_FOLDER/$RESULTS_FOLDER
 
-LOG="$HOME/$BASE_FOLDER/$RESULTS_FOLDER/$CLOUD"_testing_`date +\%y-\%m-\%d_\%H:\%M:\%S`.log
+LOG="$HOME/$BASE_FOLDER/$RESULTS_FOLDER/$LOG_PREFIX"_`date +\%y-\%m-\%d_\%H:\%M:\%S`.log
 printf "Complete log of this run is available at: %s\n" "$LOG"
 
 if [ -d "$HOME/.phoronix-test-suite" ]; then
