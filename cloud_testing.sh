@@ -185,9 +185,9 @@ while [ "$1" != "" ]; do
     case $1 in
         --cloud=* )    CLOUD=${1#*=};
 	               ;;
-        --flavor=* )    FLAVOR=${1#*=};
+        --flavor=* )   FLAVOR=${1#*=};
          	       ;;
-        --server=* )     SERVER=${1#*=};
+        --server=* )   SERVER=${1#*=};
          	       ;;
         --port=* )     PORT=${1#*=};
         	       ;;
