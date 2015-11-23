@@ -201,7 +201,7 @@ if [ -z $CLOUD ] || [ $CLOUD == "" ];then
   printf '\n\nERROR: please provide a cloud name. Exiting now.\n' && exit 1
 fi
 
-if [ -z $HOST ] || [ $HOST == "" ];then
+if [ -z $FLAVOR ] || [ $FLAVOR == "" ];then
   printf "%s" "${usage}"
   printf "\n\nERROR: please provide the hostname SSH should connect to. Exiting now.\n" && exit 1
 fi
