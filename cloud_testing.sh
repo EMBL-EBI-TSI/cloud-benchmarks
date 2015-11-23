@@ -44,7 +44,6 @@ function install_phoronix() {
 
   # Collect information about local system
   phoronix-test-suite system-info > $RESULTS_FOLDER/$LOG_PREFIX"_system-info"
-  # phoronix-test-suite detailed-system-info > $RESULTS_FOLDER/$CLOUD"_detailed-system-info"
 
   # Configure pts to run in batch mode
   sed -i \
