@@ -246,7 +246,7 @@ fi
 mkdir -p ~/$BASE_FOLDER/$DATA_FOLDER
 mkdir -p ~/$BASE_FOLDER/$RESULTS_FOLDER
 
-LOG="$HOME/$BASE_FOLDER/$RESULTS_FOLDER/cloud_testing_`date +\%y-\%m-\%d_\%H:\%M:\%S`.log"
+LOG="$HOME/$BASE_FOLDER/$RESULTS_FOLDER/$CLOUD"_testing_`date +\%y-\%m-\%d_\%H:\%M:\%S`.log
 printf "Complete log of this run is available at: %s\n" "$LOG"
 
 if [ -d "$HOME/.phoronix-test-suite" ]; then
