@@ -115,10 +115,10 @@ function install_gridftp() {
 
     cat <<EOF > ~/.ssh/config
 
-    Host $HOST
+    Host $SERVER
       StrictHostKeyChecking no
       User          $USER
-      Hostname      $HOST
+      Hostname      $SERVER
       IdentityFile  $KEYPAIR
       Port          $PORT
 EOF
