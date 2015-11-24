@@ -276,7 +276,8 @@ trap 'exec 2>&4 1>&3' 0 1 2 3
 # Redirect stdout and stderr to a log file
 exec 1>>$LOG 2>&1
 
-# From now on, normal stdout output should be appended with ">&3". e.g.:
+# From now on, normal stdout output should be appended with ">&3". We use tee
+# to redirect both to stdout and the general log file
 printf "\n\n---\nSTEP 1 - Installation\n---\n\n\n" | tee -a $LOG >&3
 cd $BASE_FOLDER || exit
 printf "Installing dependencies\n" | tee -a $LOG >&3
