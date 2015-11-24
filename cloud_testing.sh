@@ -1,9 +1,6 @@
 #!/usr/bin/env bash
 
 # User requires sudo rights
-
-#TODO: use an ad-hoc folder named after the cloud we're testing, or add a
-#prefix to all files
 BASE_FOLDER="EBI_cloud_testing"
 DATA_FOLDER="data"
 
