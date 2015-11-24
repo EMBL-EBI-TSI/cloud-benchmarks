@@ -142,7 +142,7 @@ function run_gridftp() {
 function call_home() {
   #Compress $RESULTS_FOLDER
   printf "CALLHOME: Compressing results...\n" | tee -a $LOG >&3
-  archive_name=$LOG_PREFIX-"$(date +'%y-%m-%d_%H%M%S')"_results.tar.gz
+  archive_name="$LOG_PREFIX"_$(date +'%y-%m-%d_%H%M%S')_results.tar.gz
   tar -zcvf "$archive_name" $RESULTS_FOLDER > /dev/null
 
   printf "CALLHOME: Calling home...\n" | tee -a $LOG >&3
@@ -181,6 +181,7 @@ printf '
   ###  dario@ebi.ac.uk                ###
   #######################################
 '
+
 
 while [ "$1" != "" ]; do
     case $1 in
