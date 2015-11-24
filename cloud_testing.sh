@@ -116,7 +116,7 @@ function install_gridftp() {
     Host $SERVER
       StrictHostKeyChecking no
       User          $USER
-      Hostname      $SERVER
+      HostName      $SERVER
       IdentityFile  $KEYPAIR
       Port          $PORT
 EOF
