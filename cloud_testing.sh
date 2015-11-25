@@ -130,10 +130,10 @@ function run_gridftp() {
   printf "GRIDFTP: Done.\n" | tee -a $LOG >&3
   printf "GRIDFTP: Moving data out...\n" | tee -a $LOG >&3
   /usr/bin/time -f $TIME_FORMAT_STRING -o $RESULTS_FOLDER/$LOG_PREFIX"_grid_test_time_out.csv" globus-url-copy -vb "file:///$HOME/$BASE_FOLDER/$DATA_FOLDER/test_file.dat" "sshftp://$SERVER:$PORT/~/test_file2.dat"> $RESULTS_FOLDER/$LOG_PREFIX"_grid_test_out.log"
-  printf "GRIDFTP: Moving in-memory data out" | tee -a $LOG >&3
-  printf "GRIDFTP: Creating the file to be transferred" | tee -a $LOG >&3
+  printf "GRIDFTP: Moving in-memory data out\n" | tee -a $LOG >&3
+  printf "GRIDFTP: Creating the file to be transferred\n" | tee -a $LOG >&3
   dd if=/dev/urandom of=$HOME/$BASE_FOLDER/$DATA_FOLDER/in-memory.dat bs=1G count=1
-  printf "GRIDFTP: Transferring" | tee -a $LOG >&3
+  printf "GRIDFTP: Transferrin\n" | tee -a $LOG >&3
   /usr/bin/time -f $TIME_FORMAT_STRING -o $RESULTS_FOLDER/$LOG_PREFIX"_grid_mtest_time_out.csv" globus-url-copy -vb "file:///$HOME/$BASE_FOLDER/$DATA_FOLDER/in-memory.dat" "sshftp://$SERVER:$PORT/~/in-memory.dat"> $RESULTS_FOLDER/$LOG_PREFIX"_grid_mtest_out.log"
   rm $HOME/$BASE_FOLDER/$DATA_FOLDER/in-memory.dat
   printf "GRIDFTP: GridFTP speed test completed.\n" | tee -a $LOG >&3
