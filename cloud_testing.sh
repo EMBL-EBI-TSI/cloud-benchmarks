@@ -231,6 +231,12 @@ if [ -z $KEYPAIR ] || [ $KEYPAIR == "" ];then
   printf "\n\nERROR: please provide a keypair to set SSH config with. Exiting now.\n" && exit 1
 fi
 
+# Check that KEYPAIR is an absolute path
+if [[ "$KEYPAIR" != /* ]]
+  then
+    printf "\n\nERROR: please provide an ABSOLUTE (no ~ allowed) path to the keypair. Exiting now.\n" && exit 1
+fi
+
 # PORT must be defined
 if [ -z $PORT ] || [ $PORT == "" ];then
   printf "%s" "${usage}"
