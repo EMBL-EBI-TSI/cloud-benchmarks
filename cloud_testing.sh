@@ -232,9 +232,11 @@ if [ -z $KEYPAIR ] || [ $KEYPAIR == "" ];then
 fi
 
 # Check that KEYPAIR is an absolute path
+KEYPAIR="${KEYPAIR/#\~/$HOME}"
+printf "%s" "${KEYPAIR}"
 if [[ "$KEYPAIR" != /* ]]
   then
-    printf "\n\nERROR: please provide an ABSOLUTE (no ~ allowed) path to the keypair. Exiting now.\n" && exit 1
+    printf "\n\nERROR: please provide an ABSOLUTE path to the keypair. Exiting now.\n" && exit 1
 fi
 
 # PORT must be defined
