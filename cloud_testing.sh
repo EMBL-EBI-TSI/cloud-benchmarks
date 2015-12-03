@@ -233,7 +233,6 @@ fi
 
 # Check that KEYPAIR is an absolute path
 KEYPAIR="${KEYPAIR/#\~/$HOME}"
-printf "%s" "${KEYPAIR}"
 if [[ "$KEYPAIR" != /* ]]
   then
     printf "\n\nERROR: please provide an ABSOLUTE path to the keypair. Exiting now.\n" && exit 1
