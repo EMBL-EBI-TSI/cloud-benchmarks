@@ -112,7 +112,7 @@ function install_gridftp() {
 
     Host $SERVER
       StrictHostKeyChecking no
-      User          $USER
+      User          $USERNAME
       HostName      $SERVER
       IdentityFile  $KEYPAIR
       Port          $PORT
@@ -193,7 +193,7 @@ while [ "$1" != "" ]; do
          	       ;;
         --port=* )     PORT=${1#*=};
         	       ;;
-        --user=* )     USER=${1#*=};
+        --user=* )     USERNAME=${1#*=};
        	         ;;
         --keypair=* )  KEYPAIR=${1#*=};
                  ;;
@@ -219,8 +219,8 @@ if [ -z $SERVER ] || [ $SERVER == "" ];then
   printf "\n\nERROR: please provide the server name SSH should connect to. Exiting now.\n" && exit 1
 fi
 
-# USER must be defined
-if [ -z $USER ] || [ $USER == "" ];then
+# USERNAME must be defined
+if [ -z $USERNAME ] || [ $USERNAME == "" ];then
   printf "%s" "${usage}"
   printf "\n\nERROR: please provide a username to set SSH config with. Exiting now.\n" && exit 1
 fi
