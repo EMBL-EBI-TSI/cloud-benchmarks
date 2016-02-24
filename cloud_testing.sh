@@ -171,7 +171,7 @@ Hostname of the remote EBI server to use for network testing - REQUIRED
 --port=<port>
 Network port of the remote EBI server to use for network testing - REQUIRED
 --call-home
-Enable call-home: test results will be sent back to EMBL-EBI.
+Enables call-home: test results will be sent back to EMBL-EBI. 
 '
 
 printf '

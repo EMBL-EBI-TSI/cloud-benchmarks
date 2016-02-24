@@ -30,6 +30,7 @@ The script can be freely downloaded from [GITHUB LINK OR WHATEVER HERE]. It does
 - --keypair: the absolute path to the private key of the keypair corresponding to the public key provided to EMBL-EBI for authentication;
 - --server: hostname of the EMBL-EBI server to o connect to during the test. This information will be provided by EMBL-EBI staff;
 - --port: port of the EMBL-EBI server to connect to during the test. This information will be provided by EMBL-EBI staff.
+- --call-home: enables call-home feature: test results will be sent back to EMBL-EBI.
 
 
 With all the options correctly specified, the full command to launch the script should resemble the following:
@@ -38,6 +39,6 @@ With all the options correctly specified, the full command to launch the script 
 
 When started, the script will proceed installing all the needed components, both from the official CentOS/EPEL repos and from code available on GitHub repositories. Once this preliminary step is completed, the tests will begin. The process can be followed directly in the terminal or using the verbose log file available at the path printed by the script itself at startup ("Complete log of this run is available at: <path>”). The exact execution time is difficult to predict, due to the intrinsic performance heterogeneity of different cloud providers, but is expected to be ~1hr.
 
-All the log files and tests results will be automatically compressed and sent back to EMBL-EBI for analysis. No user intervention is required.
+If the --call-home flag is specified, all the log files and test results will be automatically compressed and sent back to EMBL-EBI for analysis. Test results and logs can locally be found in the ""$CLOUD\_$FLAVOR" folder within the main result folder "EBI_cloud_testing".
 
 It is obviously possible to re-run the script several times. However, to provide the same identical environment in each run, the script takes care of erasing compiled software left from the previous iteration at launch. This does not apply to packaged softwares (i.e. GridFTP executables provided by Globus’s repos), which is not reinstalled every time.
