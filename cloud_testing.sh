@@ -170,6 +170,8 @@ Absolute path to key needed for SSH auth - REQUIRED
 Hostname of the remote EBI server to use for network testing - REQUIRED
 --port=<port>
 Network port of the remote EBI server to use for network testing - REQUIRED
+--call-home
+Enable call-home: test results will be sent back to EMBL-EBI.
 '
 
 printf '
@@ -185,17 +187,19 @@ printf '
 
 while [ "$1" != "" ]; do
     case $1 in
-        --cloud=* )    CLOUD=${1#*=};
+        --cloud=* )      CLOUD=${1#*=};
 	               ;;
-        --flavor=* )   FLAVOR=${1#*=};
+        --flavor=* )     FLAVOR=${1#*=};
          	       ;;
-        --server=* )   SERVER=${1#*=};
+        --server=* )     SERVER=${1#*=};
          	       ;;
-        --port=* )     PORT=${1#*=};
+        --port=* )       PORT=${1#*=};
         	       ;;
-        --user=* )     USERNAME=${1#*=};
+        --user=* )       USERNAME=${1#*=};
        	         ;;
-        --keypair=* )  KEYPAIR=${1#*=};
+        --keypair=* )    KEYPAIR=${1#*=};
+                 ;;
+        --call-home)     CALL_HOME=true;
                  ;;
         * )         printf -e "${usage}"
                     exit 1
@@ -302,7 +306,10 @@ run_freebayes
 run_gridftp
 
 printf "\n\n---\nSTEP 3 - Call home!\n---\n" | tee -a $LOG >&3
-call_home
+if [ "$CALL_HOME" = true ]; then
+  printf "Results were successfully sent to EMBL-EBI!"
+else
+  printf "\n\n---\nCall home is disabled for this run. Keeping data local.\n---\n" | tee -a $LOG >&3
+fi
 
 printf "DONE!\n"
-printf "Results were successfully sent to EMBL-EBI!"
