@@ -4,6 +4,10 @@
 BASE_FOLDER="EBI_cloud_testing"
 DATA_FOLDER="data"
 
+# Add pts and freebayes/bin to local path
+PATH="$PATH:$HOME/$BASE_FOLDER/phoronix-test-suite"
+PATH="$PATH:$HOME/$BASE_FOLDER/freebayes/bin"
+
 #Define format string for the time command output
 #UserModeTime:KernelModeTime:ElapsedRealTimeSec:CPUPercentage:NumSwappedOut:
 #ContextSwitchedInvoluntarily
@@ -31,9 +35,6 @@ function install_phoronix() {
   cd phoronix-test-suite || exit
   git checkout tags/v5.8.1
   cd ..
-
-  # Add pts to local path
-  PATH="$PATH:$HOME/$BASE_FOLDER/phoronix-test-suite"
 
   printf "PHORONIX: Preparing Phoronix for batch tests...\n" | tee -a $LOG >&3
   # Accept terms of pts (Y)
@@ -75,9 +76,6 @@ function install_freebayes() {
   # Compile it
   cd freebayes || exit
   make
-
-  # Add freebayes/bin to $PATH
-  PATH="$PATH:$HOME/$BASE_FOLDER/freebayes/bin"
 
   # Move to $DATA_FOLDER
   cd ../$DATA_FOLDER || exit
