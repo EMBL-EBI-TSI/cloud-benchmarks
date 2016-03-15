@@ -4,27 +4,27 @@
 ## Introduction
 The [EMBL-EBI](http://www.ebi.ac.uk/) Cloud benchmarking script is used by EMBL-EBI to establish a number of metrics that can be used to assess a cloud provider for running EMBL-EBI use cases.
 
-The script is composed by a stand-alone bash script that leverages several tests to understand the performances of the underlying infrastructure. At the time of writing, the following tests are included:
+The script is made by a stand-alone bash script that leverages several tests to understand the performances of the underlying infrastructure. At the time of writing, the following tests are included:
 
 - [Phoronix Test Suite](http://www.phoronix-test-suite.com/) to deliver a set of strictly IT-related tests with a particular focus on stressing CPUs.
-- Network connectivity  via [GridFTP](http://toolkit.globus.org/toolkit/docs/latest-stable/gridftp/) transfers from and to an EBI server.
-- A sample of bioinformatic-specific workload is tested calling variants on a publicly available 1MB-long chunk of the Human Chr20 with [FreeBayes](https://github.com/ekg/freebayes).
+- Network connectivity via [GridFTP](http://toolkit.globus.org/toolkit/docs/latest-stable/gridftp/) transfers from and to an EBI server.
+- As a proxy for bioinformatic-specific workloads, variants are called on a publicly available 1MB-long chunk of the Human Chr20 with [FreeBayes](https://github.com/ekg/freebayes).
 
 ***
 
 ## The details
 
-### Requirments
+### Requirements
 
 All the tools are automatically installed and executed by the benchmarking script, which assumes (and verifies) to be executed in a CentOS 7 environment. The user running it **must have sudo rights** and its password will be asked to escalate privileges, unless the user has also NOPASSWD rights.
 
-**No other OS is currently supported** and failure to comply may alter the tests results or block their execution. It is recommended to update the system to the latest packages via `yum update` prior to execution.
+**No other OS is currently supported** and failure to comply may alter or block tests execution. It is recommended to update the system to the latest packages via `yum update` prior to execution.
 
 Network connectivity of the Cloud Provider towards EMBL-EBI data centers is tested via GridFTP transfers. To achieve this, some form of authentication is needed. This benchmarking script adopts [GridFTP lite](http://toolkit.globus.org/toolkit/data/gridftp/) to overcome the limitations given by the certificates needed to empower full-blown GridFTP servers, as it exploits SSH to carry out authentication. To allow EBI staff to properly authorize in advance the connection, prospect users must provide the public part of a SSH keypair to be used in the SSH authentication mechanism. `Hostname` and `port` to be used for the connection, as well as the assigned `username`, will be provided by EBI staff as soon as the `public key` is be uploaded to the server and the relevant user/permission established. Ports from `50000` to `50100` must accept TCP traffic from the outside to allow for GridFTP connections.
 
-The benchmarck require `20GB` of avialable space, in the root partition of virtual machine.
+The benchmark process require `20GB` of available space, in the root partition of virtual machine.
 
-The script can be freely downloaded from [GITHUB LINK OR WHATEVER HERE]. It does need a number of options specified at launch time to correctly carry out the test, as follows:
+The script can be freely downloaded from [here](https://github.com/EMBL-EBI-TSI/cloud-benchmarks). It does need a number of options specified at launch time to correctly carry out the test, as follows:
 
 ### Options
 
