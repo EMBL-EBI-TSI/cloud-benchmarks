@@ -169,7 +169,7 @@ Hostname of the remote EBI server to use for network testing - REQUIRED
 --port=<port>
 Network port of the remote EBI server to use for network testing - REQUIRED
 --call-home
-Enables call-home: test results will be sent back to EMBL-EBI. 
+Enables call-home: test results will be sent back to EMBL-EBI.
 '
 
 printf '
@@ -305,6 +305,7 @@ run_gridftp
 
 printf "\n\n---\nSTEP 3 - Call home!\n---\n" | tee -a $LOG >&3
 if [ "$CALL_HOME" = true ]; then
+  call_home
   printf "Results were successfully sent to EMBL-EBI!"
 else
   printf "\n\n---\nCall home is disabled for this run. Keeping data local.\n---\n" | tee -a $LOG >&3
