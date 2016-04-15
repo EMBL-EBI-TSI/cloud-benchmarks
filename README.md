@@ -53,7 +53,7 @@ If the flag `--call-home` is specified, all the log files and test results will 
 
 It is obviously possible to re-run the script several times. However, to provide the same identical environment in each run, the script takes care of erasing compiled software left from the previous iteration at launch. This does not apply to packaged softwares (i.e. GridFTP executables provided by Globus’s repos), which is not reinstalled every time.
 
-###  Executing the banchmark
+###  Executing the benchmark
 
 It could be useful to install and use `screen` in order to avoid accidental benchmark's interruption, caused by the disconnection of the shell/network:
 
