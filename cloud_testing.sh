@@ -106,6 +106,7 @@ function install_gridftp() {
     # Install GridFTP
     sudo yum -y install globus-gridftp
 
+    mkdir -p ~/.ssh
     cat <<EOF > ~/.ssh/config
 
     Host $SERVER
