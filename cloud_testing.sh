@@ -300,9 +300,9 @@ printf "\nInstalling Freebayes and getting benchmarking data\n" | tee -a $LOG >&
 install_freebayes
 
 printf "\n\n---\nSTEP 2 - Run tests\n---\n" | tee -a $LOG >&3
+run_gridftp
 run_phoronix
 run_freebayes
-run_gridftp
 
 printf "\n\n---\nSTEP 3 - Call home!\n---\n" | tee -a $LOG >&3
 if [ "$CALL_HOME" = true ]; then
