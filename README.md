@@ -20,26 +20,24 @@ All the tools are automatically installed and executed by the benchmarking scrip
 
 **No other OS is currently supported** and failure to comply may alter or block tests execution. It is recommended to update the system to the latest packages via `yum update` prior to execution.
 
-Network connectivity of the Cloud Provider towards EMBL-EBI data centers is tested via GridFTP transfers. To achieve this, some form of authentication is needed. This benchmarking script adopts [GridFTP lite](http://toolkit.globus.org/toolkit/data/gridftp/) to overcome the limitations given by the certificates needed to empower full-blown GridFTP servers, as it exploits SSH to carry out authentication. To allow EBI staff to properly authorize in advance the connection, prospect users must provide the public part of a SSH keypair to be used in the SSH authentication mechanism. `Hostname` and `port` to be used for the connection, as well as the assigned `username`, will be provided by EBI staff as soon as the `public key` is be uploaded to the server and the relevant user/permission established. Ports from `50000` to `50100` must accept TCP traffic from the outside to allow for GridFTP connections.
-
-The benchmark process require `20GB` of available space, in the root partition of virtual machine.
+Network connectivity of the Cloud Provider towards EMBL-EBI data centers is tested via GridFTP transfers. To achieve this, some form of authentication is needed. This benchmarking script adopts [GridFTP lite](http://toolkit.globus.org/toolkit/data/gridftp/) to overcome the limitations given by the certificates needed to empower full-blown GridFTP servers, as it exploits SSH to carry out authentication. To allow EBI staff to properly authorize in advance the connection, prospect users must provide the public part of a SSH keypair to be used in the SSH authentication mechanism. `Hostname` and `port` to be used for the connection, as well as the assigned `username`, will be provided by EBI staff as soon as the `public key` is be uploaded to the server and the relevant user/permission established. Ports from `50000` to `50100` must accept TCP traffic from the outside to allow for GridFTP connections. The benchmarking process require `20GB` of available space in the root partition of the virtual machine running it.
 
 The script can be freely downloaded from [here](https://github.com/EMBL-EBI-TSI/cloud-benchmarks). It does need a number of options specified at launch time to correctly carry out the test, as follows:
 
 ### Options
 
-Mandatory options | description
+Mandatory options | Description
 ---- | ----
-`--cloud <value>` | the name of the cloud provider running the test, this is chosen by the cloud provider itself.<p> It may or may not coincide with the username assigned by EMBL-EBI
-`--flavor <value>` | the flavor of the VM the test is running on.<p> Please note that, as part of the test, statistics regarding available resources are acquired
-`--keypair <value>` | the absolute path to the cloud provider private key.<p> The keypair corresponding to the public key provided to EMBL-EBI for authentication
-`--port <value>` | the port of the EMBL-EBI server to connect to during the test.<p> This information will be provided by EMBL-EBI staff
-`--server <value>` | the hostname of the EMBL-EBI server to o connect to during the test.<p> This information will be provided by EMBL-EBI staff
-`--user <value>` | the username provided by EMBL-EBI that will be used for SSH authentication
+`--cloud <value>` | The name of the cloud provider running the test, this is chosen by the cloud provider itself.<p> It may or may not coincide with the username assigned by EMBL-EBI
+`--flavor <value>` | The flavor of the VM the test is running on.<p> Please note that, as part of the test, statistics regarding available resources are acquired
+`--keypair <value>` | The absolute path to the cloud provider private key.<p> This should match the public key provided to EMBL-EBI for authentication
+`--port <value>` | The port of the EMBL-EBI server to connect to during the test.<p> This information will be provided by EMBL-EBI staff
+`--server <value>` | The hostname of the EMBL-EBI server to o connect to during the test.<p> This information will be provided by EMBL-EBI staff
+`--user <value>` | The username provided by EMBL-EBI that will be used for SSH authentication
 
-Optional | descritpion
+Optional | Description
  ---- | ----
-`--call-home` | if specified test results will be sent back to the EMBL-EBI benchmark server
+`--call-home` | If specified, test results will be sent back to the EMBL-EBI benchmark server
 
 
 With all the options correctly specified, the full command to launch the script should resemble the following:
@@ -47,7 +45,7 @@ With all the options correctly specified, the full command to launch the script 
     ./cloud_testing.sh --cloud=<cloud_name> --flavor=<flavor_name>  --keypair=</path/to/keypair> \
       --port=<server_port_number> --server=<hostname> --user=<username> [--call-home]
 
-When started, the script will proceed installing all the needed components, both from the official CentOS/EPEL repos and from code available on GitHub repositories. Once this preliminary step is completed, the tests will begin. The process can be followed directly in the terminal or using the verbose log file available at the path printed by the script itself at startup ("Complete log of this run is available at: \<path\>”). The exact execution time is difficult to predict, due to the intrinsic performance heterogeneity of different cloud providers, but is expected to be ~1hr.
+When started, the script will proceed installing all the needed components, both from the official CentOS/EPEL repos and from code available on GitHub repositories. Once this preliminary step is completed, the tests will begin. The process can be followed directly in the terminal or using the verbose log file available at the path printed by the script itself at startup ("Complete log of this run is available at: \<path\>”). The exact execution time is difficult to predict, due to the intrinsic performance heterogeneity of different cloud providers, but is expected to be ~1.5hrs.
 
 If the flag `--call-home` is specified, all the log files and test results will be automatically compressed and sent back to EMBL-EBI for analysis. Test results and logs can locally be found in the `$CLOUD_$FLAVOR` folder, within the main results folder `EBI_cloud_testing`.
 
@@ -55,7 +53,7 @@ It is obviously possible to re-run the script several times. However, to provide
 
 ###  Executing the benchmark
 
-It could be useful to install and use `screen` in order to avoid accidental benchmark's interruption, caused by the disconnection of the shell/network:
+It could be useful to install and use `screen` in order to avoid accidental benchmark interruption, caused by the disconnection of the shell/network:
 
     sudo yum -y install screen
     screen -R bench
