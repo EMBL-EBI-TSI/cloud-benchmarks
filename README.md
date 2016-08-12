@@ -22,6 +22,11 @@ All the tools are automatically installed and executed by the benchmarking scrip
 
 Network connectivity of the Cloud Provider towards EMBL-EBI data centers is tested via GridFTP transfers. To achieve this, some form of authentication is needed. This benchmarking script adopts [GridFTP lite](http://toolkit.globus.org/toolkit/data/gridftp/) to overcome the limitations given by the certificates needed to empower full-blown GridFTP servers, as it exploits SSH to carry out authentication. To allow EBI staff to properly authorize in advance the connection, prospect users must provide the public part of a SSH keypair to be used in the SSH authentication mechanism. `Hostname` and `port` to be used for the connection, as well as the assigned `username`, will be provided by EBI staff as soon as the `public key` is be uploaded to the server and the relevant user/permission established. Ports from `50000` to `50100` must accept TCP traffic from the outside to allow for GridFTP connections. The benchmarking process require `20GB` of available space in the root partition of the virtual machine running it.
 
+> ### Important note
+> The EMBL-EBI benchmarking server _**requires authentication**_. This is currently done via SSH, so you must get in touch with EMBL-EBI providing the _public part_ of the SSH keypair you would like to use to authenticate. EMBL-EBI will then send you back all the configuration details you need to fill the options mentioned below.
+>
+> Also, keep in mind that you won't be allowed to login into the server anyway, as SSH is only used to authenticate against the GridFTP server. An easy way to test if authentication works is trying to do an SSH on the provided port: getting a "Connection closed" reply means everything worked as expected, while a "Permission denied" message means the authentication failed. If the problem persist, get back in touch with us.
+
 The script can be freely downloaded from [here](https://github.com/EMBL-EBI-TSI/cloud-benchmarks). It does need a number of options specified at launch time to correctly carry out the test, as follows:
 
 ### Options
@@ -49,7 +54,8 @@ When started, the script will proceed installing all the needed components, both
 
 If the flag `--call-home` is specified, all the log files and test results will be automatically compressed and sent back to EMBL-EBI for analysis. Test results and logs can locally be found in the `$CLOUD_$FLAVOR` folder, within the main results folder `EBI_cloud_testing`.
 
-It is obviously possible to re-run the script several times. However, to provide the same identical environment in each run, the script takes care of erasing compiled software left from the previous iteration at launch. This does not apply to packaged softwares (i.e. GridFTP executables provided by Globus’s repos), which is not reinstalled every time.
+It is obviously possible to re-run the script several times. However, to provide the same identical environment in each run, the script takes care of erasing compiled software left from the previous iteration at launch. This does not apply to packaged softwares (i.e. GridFTP executables provided by Globus’s repos), which are not reinstalled every time.
+
 
 ###  Executing the benchmark
 
