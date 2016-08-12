@@ -25,7 +25,7 @@ Network connectivity of the Cloud Provider towards EMBL-EBI data centers is test
 > ### Important note
 > The EMBL-EBI benchmarking server _**requires authentication**_. This is currently done via SSH, so you must get in touch with EMBL-EBI providing the _public part_ of the SSH keypair you would like to use to authenticate. EMBL-EBI will then send you back all the configuration details you need to fill the options mentioned below.
 >
-> Also, keep in mind that you won't be allowed to login into the server anyway, as SSH is only used to authenticate against the GridFTP server. An easy way to test if authentication works is trying to do an SSH on the provided port: getting a "Connection closed" reply means everything worked as expected, while a "Permission denied" message means the authentication failed. If the problem persist, get back in touch with us.
+> Also, keep in mind that you won't be allowed to login into the server anyway, as SSH is only used to authenticate against the GridFTP server. An easy way to test if authentication works is trying to do an SSH on the provided port: getting a "Connection closed" means everything worked as expected, while a "Permission denied" message means that authentication failed. If the problem persists, please get back in touch with us.
 
 The script can be freely downloaded from [here](https://github.com/EMBL-EBI-TSI/cloud-benchmarks). It does need a number of options specified at launch time to correctly carry out the test, as follows:
 
