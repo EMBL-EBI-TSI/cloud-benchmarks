@@ -18,11 +18,14 @@ function install_dependencies() {
   sudo yum makecache fast
 
   #Phoronix
-  sudo yum -y install git php php-xml xdg-utils bc
+  sudo yum -y install git php php-xml xdg-utils bc epel-release
 
   #Freebayes (needs to be compiled)
   sudo yum -y group install "Development Tools"
   sudo yum -y install zlib-devel cmake
+
+  #GridFTP
+  sudo yum -y install udt
 
   #Time and wget packages
   sudo yum -y install time wget
@@ -71,7 +74,7 @@ function install_freebayes() {
   git clone --recursive git://github.com/ekg/freebayes.git
   cd freebayes || exit
   git checkout tags/v0.9.21
-  git submodule update --recursive 
+  git submodule update --recursive
   cd ..
 
   # Compile it
