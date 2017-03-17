@@ -60,7 +60,7 @@ function install_phoronix() {
 }
 
 function run_phoronix() {
-  printf "PHORONIX: Running tests (this will take a while, ~30mins)\n" | tee -a $LOG >&3
+  printf "PHORONIX: Running tests (this will take up to 2hrs, depending on the VM performance)\n" | tee -a $LOG >&3
   # Run chosen phoronix tests
   TEST_RESULTS_NAME="phoronixtests" phoronix-test-suite batch-benchmark smallpt build-linux-kernel c-ray sqlite fourstones pybench
 
@@ -204,7 +204,7 @@ while [ "$1" != "" ]; do
                  ;;
         --call-home)     CALL_HOME=true;
                  ;;
-        * )         printf -e "${usage}"
+        * )         printf "${usage}"
                     exit 1
     esac
     shift
