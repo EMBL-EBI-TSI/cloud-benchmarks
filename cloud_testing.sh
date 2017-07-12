@@ -105,7 +105,7 @@ function run_freebayes() {
 
 function install_gridftp() {
     # Add Globus GridFTP repos
-    sudo rpm -U  --replacepkgs http://toolkit.globus.org/ftppub/gt6/installers/repo/globus-toolkit-repo-latest.noarch.rpm
+    sudo rpm -U  --replacepkgs https://downloads.globus.org/toolkit/gt6/stable/installers/repo/rpm/globus-toolkit-repo-latest.noarch.rpm
 
     # Install GridFTP
     sudo yum -y install globus-gridftp
