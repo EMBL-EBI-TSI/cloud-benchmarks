@@ -13,6 +13,17 @@ PATH="$PATH:$HOME/$BASE_FOLDER/freebayes/bin"
 #ContextSwitchedInvoluntarily
 TIME_FORMAT_STRING="%U;%S;%e;%P;%W;%c"
 
+function clean_on_exit () {
+  exit_status=$?
+
+  if [ "$exit_status" -ne "0" ]; then
+   echo "BENCHMARKING FAILED" >> $LOG;
+   exit 1
+  fi
+
+  exit
+}
+
 function install_dependencies() {
   printf "Install common dependencies.\n" | tee -a $LOG >&3
   #Update yum cache
@@ -303,7 +314,7 @@ trap 'exec 2>&4 1>&3' 0 1 2 3
 exec 1>>$LOG 2>&1
 
 # Set a trap for failure
-trap 'echo "BENCHMARKING FAILED" > $LOG' 1 2 3
+trap "clean_on_exit" 0 1 2 3
 
 # From now on, normal stdout output should be appended with ">&3". We use tee
 # to redirect both to stdout and the general log file
