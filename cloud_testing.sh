@@ -29,7 +29,7 @@ function install_dependencies() {
   #Update yum cache
   sudo yum makecache fast
   #Time and wget packages
-  sudo yum -y install time wget
+  sudo yum -y install time wget epel-release
 }
 
 function install_phoronix() {
