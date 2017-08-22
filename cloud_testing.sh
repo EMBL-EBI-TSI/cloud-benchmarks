@@ -115,6 +115,10 @@ function run_freebayes() {
 
 function install_gridftp() {
     printf "Install GridFTP dependencies.\n" | tee -a $LOG >&3
+    
+    # Add udt
+    sudo yum -y install udt
+    
     # Add Globus GridFTP repos
     sudo rpm -U  --replacepkgs https://downloads.globus.org/toolkit/gt6/stable/installers/repo/rpm/globus-toolkit-repo-latest.noarch.rpm
 
