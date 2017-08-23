@@ -30,6 +30,10 @@ function install_dependencies() {
   sudo yum makecache fast
   #Time and wget packages
   sudo yum -y install time wget epel-release
+  
+  #Add epel-release and development packages
+  sudo yum -y install epel-release
+  sudo yum -y group install "Development Tools"
 }
 
 function install_phoronix() {
