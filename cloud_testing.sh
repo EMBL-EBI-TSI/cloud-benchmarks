@@ -57,7 +57,6 @@ function install_phoronix() {
 
   # If phoronix is run as root, the batch configuration ends up in a different file
   if [[ $EUID -eq "0" ]]; then
-        echo "HERE"
         phoronix_configuration_path="/etc/phoronix-test-suite.xml"
   else
         phoronix_configuration_path="~/.phoronix-test-suite/user-config.xml"
