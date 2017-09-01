@@ -30,7 +30,7 @@ function install_dependencies() {
   sudo yum makecache fast
   #Time and wget packages
   sudo yum -y install time wget epel-release
-  
+
   #Add epel-release and development packages
   sudo yum -y install epel-release
   sudo yum -y group install "Development Tools"
@@ -55,6 +55,14 @@ function install_phoronix() {
   # Collect information about local system
   phoronix-test-suite system-info > $RESULTS_FOLDER/$LOG_PREFIX"_system-info"
 
+  # If phoronix is run as root, the batch configuration ends up in a different file
+  if [[ $EUID -eq "0" ]]; then
+        echo "HERE"
+        phoronix_configuration_path="/etc/phoronix-test-suite.xml"
+  else
+        phoronix_configuration_path="~/.phoronix-test-suite/user-config.xml"
+  fi
+
   # Configure pts to run in batch mode
   sed -i \
   -e 's/<SaveResults>FALSE/<SaveResults>TRUE/' \
@@ -65,7 +73,7 @@ function install_phoronix() {
   -e 's/<PromptSaveName>TRUE/<PromptSaveName>FALSE/' \
   -e 's/<RunAllTestCombinations>FALSE/<RunAllTestCombinations>TRUE/' \
   -e 's/<Configured>FALSE/<Configured>TRUE/' \
-  ~/.phoronix-test-suite/user-config.xml
+  $phoronix_configuration_path
 }
 
 function run_phoronix() {
@@ -119,10 +127,10 @@ function run_freebayes() {
 
 function install_gridftp() {
     printf "Install GridFTP dependencies.\n" | tee -a $LOG >&3
-    
+
     # Add udt
     sudo yum -y install udt
-    
+
     # Add Globus GridFTP repos
     sudo rpm -U  --replacepkgs https://downloads.globus.org/toolkit/gt6/stable/installers/repo/rpm/globus-toolkit-repo-latest.noarch.rpm
 
