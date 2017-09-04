@@ -59,7 +59,7 @@ function install_phoronix() {
   if [[ $EUID -eq "0" ]]; then
         phoronix_configuration_path="/etc/phoronix-test-suite.xml"
   else
-        phoronix_configuration_path="~/.phoronix-test-suite/user-config.xml"
+        phoronix_configuration_path="$HOME/.phoronix-test-suite/user-config.xml"
   fi
 
   # Configure pts to run in batch mode
