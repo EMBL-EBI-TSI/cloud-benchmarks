@@ -78,7 +78,7 @@ function install_phoronix() {
 function run_phoronix() {
   printf "PHORONIX: Running tests (this will take up to 2hrs, depending on the VM performance)\n" | tee -a $LOG >&3
   # Run chosen phoronix tests
-  TEST_RESULTS_NAME="phoronixtests" phoronix-test-suite batch-benchmark smallpt build-linux-kernel c-ray sqlite fourstones pybench
+  TEST_RESULTS_NAME="phoronixtests" phoronix-test-suite batch-benchmark smallpt build-linux-kernel-1.6.0 c-ray sqlite fourstones pybench
 
   #Export results in JSON
   phoronix-test-suite result-file-to-json "phoronixtests" > $RESULTS_FOLDER/$LOG_PREFIX"_phoronix_results.json"
